@@ -21,7 +21,7 @@
     "@wordpress/scripts": "^31.2.0",
     "@wordpress/stylelint-config": "^23.29.0",
     "dir-archiver": "^2.1.0",
-    "sass": "^1.97.1",
+    "sass": "^1.97.2",
     "stylelint": "^16.9.0",
     "uglify-js": "^3.19.0"
   },
