@@ -31,7 +31,7 @@ Installation
 
 ### Quick Start
 
-1. Search for `'_sumun'` (inside single quotations) to capture the text domain and replace with: `'your-theme-name'`.
+1. Search for `'_sumun_'` (inside single quotations) to capture the text domain and replace with: `'your-theme-name'`.
 
 ### Setup
 

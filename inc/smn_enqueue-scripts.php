@@ -6,7 +6,7 @@
  function smn_scripts() {
 
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( '_sumun-js', get_template_directory_uri() . '/assets/js/_sumun.js', array(), true );
+	wp_enqueue_script( 'sorribes-js', get_template_directory_uri() . '/assets/js/_sumun.js', array(), true );
 	wp_enqueue_script( 'smn_sumun-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), _S_VERSION, true );
 
 	if ( has_block( 'cb/carousel' ) ) {
@@ -53,8 +53,8 @@ add_action( 'wp_enqueue_scripts', 'theme_gsap_script' );
  * Enqueue scripts and styles.
  
 function smn_hybrid_scripts() {
-	wp_enqueue_style( '_sumun-style', get_stylesheet_uri(), array(), _S_VERSION );
-	wp_style_add_data( '_sumun-style', 'rtl', 'replace' );
+	wp_enqueue_style( 'sorribes-style', get_stylesheet_uri(), array(), _S_VERSION );
+	wp_style_add_data( 'sorribes-style', 'rtl', 'replace' );
 
 	
 

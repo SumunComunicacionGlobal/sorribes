@@ -1,22 +1,22 @@
 {
-  "name": "_smn_hybrid",
+  "name": "sorribes",
   "version": "1.0.0",
-  "description": "Theme WP _Sumun Hybrid",
+  "description": "Theme WP _Sumun Hybrid para Sorribes",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SumunComunicacionGlobal/smn_hybrid.git"
+    "url": "https://github.com/SumunComunicacionGlobal/sorribes.git"
   },
   "keywords": [
     "sass",
     "wordpress",
     "woocommerce"
   ],
-  "author": "Alvaro Rubioc",
+  "author": "Sumun.net",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SumunComunicacionGlobal/smn_hybrid/issues"
+    "url": "https://github.com/SumunComunicacionGlobal/sorribes/issues"
   },
-  "homepage": "https://github.com/SumunComunicacionGlobal/smn_hybrid#readme",
+  "homepage": "https://github.com/SumunComunicacionGlobal/sorribes#readme",
   "devDependencies": {
     "@wordpress/scripts": "^31.6.0",
     "@wordpress/stylelint-config": "^23.33.0",
@@ -28,9 +28,9 @@
   "scripts": {
     "watch": "sass --watch sass:./ --no-source-map --style compressed",
     "compile:css": "sass sass:./ && stylelint '*.css' --fix || true && stylelint '*.css' --fix",
-    "compile:js": "uglifyjs assets/js/*.js > assets/js/_sumun.min.js",
-    "bundle": "dir-archiver --src . --dest ../_sumun.zip --exclude .DS_Store .stylelintrc.json .eslintrc .git .gitattributes .github .gitignore README.md composer.json composer.lock node_modules vendor package-lock.json package.json .travis.yml phpcs.xml.dist sass style.css.map yarn.lock",
-    "sync": "browser-sync start --proxy 'http://localhost:8888/_sumun-hybrid/' --files ['**/*.php', '*.*']",
+    "compile:js": "uglifyjs assets/js/*.js > assets/js/sorribes.min.js",
+    "bundle": "dir-archiver --src . --dest ../sorribes.zip --exclude .DS_Store .stylelintrc.json .eslintrc .git .gitattributes .github .gitignore README.md composer.json composer.lock node_modules vendor package-lock.json package.json .travis.yml phpcs.xml.dist sass style.css.map yarn.lock",
+    "sync": "browser-sync start --proxy 'https://sorribes.local/' --files ['**/*.php', '*.*']",
     "dev": "npm run watch & npm run sync"
   }
 }

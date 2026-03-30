@@ -17,7 +17,7 @@
 
 		wp_link_pages(
 			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', '_sumun' ),
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'sorribes' ),
 				'after'  => '</div>',
 			)
 		);
@@ -31,7 +31,7 @@
 				sprintf(
 					wp_kses(
 						/* translators: %s: Name of current post. Only visible to screen readers */
-						__( 'Edit <span class="screen-reader-text">%s</span>', '_sumun' ),
+						__( 'Edit <span class="screen-reader-text">%s</span>', 'sorribes' ),
 						array(
 							'span' => array(
 								'class' => array(),

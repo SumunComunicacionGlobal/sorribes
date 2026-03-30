@@ -2,7 +2,7 @@
 // Enqueue script into block editor
 function smn_hybrid_enqueue_scripts() {
   wp_enqueue_script(
-    '_sumun-scripts',
+    'sorribes-scripts',
     get_template_directory_uri() . '/assets/js/_sumun.js',
     array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ),
     null,
@@ -14,7 +14,7 @@ add_action( 'enqueue_block_editor_assets', 'smn_hybrid_enqueue_scripts' );
 // Enqueue styles in block editor and front end
 function smn_hybrid_enqueue_styles() {
   wp_enqueue_style(
-    '_sumun-styles',
+    'sorribes-styles',
     get_template_directory_uri() . '/assets/css/_sumun.css',
     array(),
     filemtime( get_template_directory() . '/assets/css/_sumun.css' )

@@ -24,9 +24,9 @@ function smn_hybrid_setup() {
 		* Make theme available for translation.
 		* Translations can be filed in the /languages/ directory.
 		* If you're building a theme based on _sumun, use a find and replace
-		* to change '_sumun' to the name of your theme in all the template files.
+		* to change 'sorribes' to the name of your theme in all the template files.
 		*/
-	load_theme_textdomain( '_sumun', get_template_directory() . '/languages' );
+	load_theme_textdomain( 'sorribes', get_template_directory() . '/languages' );
 
 	// Add default posts and comments RSS feed links to head.
 	add_theme_support( 'automatic-feed-links' );
@@ -53,7 +53,7 @@ function smn_hybrid_setup() {
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus(
 		array(
-			'primary-menu' => esc_html__( 'Primary', '_sumun' ),
+			'primary-menu' => esc_html__( 'Primary', 'sorribes' ),
 		)
 	);
 
