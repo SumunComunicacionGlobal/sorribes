@@ -1,3 +1,7 @@
+label {
+    font-size: var(--wp--preset--font-size--small);
+}
+
 .wp-block-post-title a {
 	text-decoration: none;
 }
@@ -5,5 +9,30 @@
 [class*="has-heading-"][class*="-font-size"] {
     line-height: var(--wp--custom--line-height--tiny);
     font-family: var(--wp--preset--font-family--font-heading);
+    font-weight: 600;
 }
 
+.is-style-pill {
+    display: inline-block;
+    padding: 0.25em 0.75em;
+    border: 1px solid;
+    border-radius: 9999px;
+
+    &:before {
+        content: "";
+        display: inline-block;
+        margin-right: .5em;
+        width: .75em;
+        height: .75em;
+        background-color: var(--wp--preset--color--secondary);
+    }
+}
+
+.has-caption-font-size {
+
+    &,
+    * {
+        font-family: var(--wp--preset--font-family--font-caption);
+        text-transform: uppercase;
+    }
+}

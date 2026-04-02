@@ -1,0 +1,12 @@
+@use '../abstracts/mixins' as *;
+
+.pcf7-presupuestador__form {
+    background-color: var(--wp--preset--color--neutral-white);
+    padding: var(--wp--preset--spacing--20);
+    border: 1px solid var(--wp--preset--color--neutral-30);
+    border-radius: var(--wp--custom--border-radius--05);
+}
+
+.pcf7-presupuestador__label {
+    font-weight: 600;
+}

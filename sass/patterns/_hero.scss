@@ -1,3 +1,18 @@
 .home #hero {
     position: relative;
 }
+
+#masthead {
+    transition: all 0.3s ease;
+
+    &.is-position-sticky {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 10;
+    }
+}
+body:not(.scrolled) #masthead {
+    background-color: transparent !important;
+}

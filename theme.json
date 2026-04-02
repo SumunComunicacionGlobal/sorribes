@@ -251,6 +251,11 @@
       "defaultSpacingSizes": false,
       "spacingSizes": [
         {
+          "name": "Space 05 (0.5rem - 8px)",
+          "size": "0.5rem",
+          "slug": "05"
+        },
+        {
           "name": "Space 1 (1rem - 16px)",
           "size": "1rem",
           "slug": "10"
@@ -271,19 +276,34 @@
           "slug": "40"
         },
         {
+          "name": "Space 5 (3rem - 48px)",
+          "size": "3rem",
+          "slug": "50"
+        },
+        {
           "name": "Space 6 (4rem - 64px)",
           "size": "4rem",
           "slug": "60"
         },
         {
-          "name": "Space 7 (4.5rem - 72px)",
-          "size": "4.5rem",
+          "name": "Space 7 (5rem - 80px)",
+          "size": "5rem",
           "slug": "70"
         },
         {
-          "name": "Space 8 (5rem - 80px)",
-          "size": "5rem",
+          "name": "Space 8 (6rem - 96px)",
+          "size": "6rem",
           "slug": "80"
+        },
+        {
+          "name": "Space 9 (8rem - 128px)",
+          "size": "8rem",
+          "slug": "90"
+        },
+        {
+          "name": "Space 10 (10rem - 160px)",
+          "size": "10rem",
+          "slug": "100"
         }
       ],
       "units": [
@@ -455,7 +475,7 @@
 		"elements": {
 			"button": {
 				"border": {
-					"radius": "var(--wp--custom--border-radius--025)",
+					"radius": "var(--wp--custom--border-radius--025) var(--wp--custom--border-radius--025) var(--wp--custom--border-radius--05) var(--wp--custom--border-radius--025)",
 					"width": "0px"
 				},
 				"color": {
@@ -463,13 +483,13 @@
 					"text": "var(--wp--preset--color--background)"
 				},
 				"spacing": {
-					"padding": "calc(0.5rem + 4px) 2rem"
+					"padding": ".25rem .25rem .25rem 1rem"
 				},
 				"typography": {
 					"fontFamily": "var(--wp--preset--font-family--font-main)",
-					"fontSize": "var(--wp--preset--font-size--body)",
+					"fontSize": "var(--wp--preset--font-size--small)",
 					"lineHeight": "var(--wp--custom--line-height--normal)",
-          "fontWeight": "400"
+          "fontWeight": "700"
 				}
 			},
 			"caption": {
@@ -537,8 +557,8 @@
 			"blockGap": "var(--wp--custom--layout--gap)",
 			"padding": {
 				"bottom": "0px",
-				"left": "2rem",
-				"right": "2rem",
+				"left": "1rem",
+				"right": "1rem",
 				"top": "0px"
 			}
 		},

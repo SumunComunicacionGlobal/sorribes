@@ -69,3 +69,16 @@ function smn_hybrid_pingback_header() {
 	}
 }
 add_action( 'wp_head', 'smn_hybrid_pingback_header' );
+
+function smn_add_body_lines_element() {
+	echo '<div class="body-lines">
+			<div class="body-lines--inner">
+				<div class="line"></div>
+				<div class="line"></div>
+				<div class="line"></div>
+				<div class="line"></div>
+				<div class="line"></div>
+			</div>
+		</div>';
+}
+add_action( 'wp_body_open', 'smn_add_body_lines_element' );

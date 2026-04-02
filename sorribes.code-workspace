@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../plugins/presupuestador-csv-cf7"
+		}
+	],
+	"settings": {}
+}

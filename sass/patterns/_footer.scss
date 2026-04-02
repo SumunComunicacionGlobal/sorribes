@@ -1,0 +1,16 @@
+.wp-block-categories-list {
+    flex-direction: column;
+    gap: var(--wp--preset--spacing--10);
+    margin-block-start: var(--wp--custom--layout--gap);
+
+    li.cat-item a {
+        padding: 0;
+        height: auto;
+    }
+}
+
+// @media ($below-tablet) {
+//     .wp-block-categories-list {
+
+//     }
+// }

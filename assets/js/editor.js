@@ -47,6 +47,10 @@ wp.domReady( () => {
 			name: 'outline-with-arrow',
 			label: 'Contorno con Flecha',
 		},
+		{
+			name: 'link-with-arrow',
+			label: 'Link con Flecha',
+		},
 	] );
 	wp.blocks.registerBlockStyle( 'core/paragraph', [
 		{
@@ -58,6 +62,11 @@ wp.domReady( () => {
 			name: 'title-has-image',
 			label: 'Imagen integrada',
 		},
+		{
+			name: 'pill',
+			label: 'Píldora',
+			isDefault: false
+		}
 	] );
 
 	wp.blocks.registerBlockStyle( 'core/cover', [
@@ -65,6 +74,11 @@ wp.domReady( () => {
 			name: 'cover-contain-background',
 			label: 'Contain Background',
 		},
+		{
+			name: 'rombos-overlay',
+			label: 'Rombos Overlay',
+			isDefault: false,
+		}
 	] );
 
 	wp.blocks.registerBlockStyle( 'core/quote', [
@@ -95,6 +109,13 @@ wp.domReady( () => {
 			label: 'Margin vertical (top & bottom 80px)',
 		},
 	] );
+
+	wp.blocks.registerBlockStyle('core/navigation', [
+		{
+			name: 'arrow-navigation',
+			label: 'Arrow',
+		}
+	]);
 	
 	wp.blocks.registerBlockVariation( 'core/group', [
 		{

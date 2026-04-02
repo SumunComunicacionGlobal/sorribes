@@ -1,7 +1,29 @@
 .wp-block-cover {
+
+    background-image: url(./assets/img/fondo-ruido.gif);
+
     &.is-style-cover-contain-background { 
         .wp-block-cover__image-background {
             object-fit: contain;
         }
     }
+
+    .wp-block-cover__background.has-background-dim.has-background-dim-90 {
+        opacity: .96;
+    }
+
+    &.is-style-rombos-overlay {
+        &:after {
+            content: "";
+            position: absolute;
+            top: var(--wp--custom--layout--gap);
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-image: url(./assets/img/decoracion-rombos.svg);
+            background-repeat: repeat-x;
+            z-index: 1;
+        }
+    }
+
 }

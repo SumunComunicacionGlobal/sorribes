@@ -52,3 +52,38 @@
     }
 }
 
+.casos-entradas-list {
+
+    .casos-entradas-item {
+        margin-bottom: var(--wp--custom--layout--gap);
+        position: relative;
+        padding-right: 2rem;
+
+        p {
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+
+        h3 {
+            margin-block-start: 0;
+        }
+
+        a {
+            text-decoration: none;;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: var(--wp--preset--color--primary);
+            mask-image: url(./assets/icons/icon-arrow-btn.svg);
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
+    }
+}

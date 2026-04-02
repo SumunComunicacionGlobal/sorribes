@@ -23,6 +23,62 @@ body .is-layout-flow {
 }
 
 :root :where(.wp-block-cover) {
-    padding-left: var(--wp--style--root--padding-left);
-    padding-right: var(--wp--style--root--padding-right);
+    padding-left: var(--wp--preset--spacing--10);
+    padding-right: var(--wp--preset--spacing--10);
+
+    &.alignfull {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.body-lines {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+
+    .body-lines--inner {
+        position: relative;
+        z-index: 2;
+        max-width: var(--wp--custom--layout--content);
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    .line {
+        position: absolute;
+        top: 0;
+        height: 100vh;
+        width: 1px;
+        border-right: 1px dashed var(--wp--preset--color--neutral-60);
+        opacity: 0.5;
+        z-index: 1;
+
+        @for $i from 1 through 5 {
+            &:nth-child(#{$i}) {
+                left: calc(#{($i - 1) * 25%});
+            }
+        }
+    }
+}
+
+#primary > article > .entry-content > *:first-child {
+    padding-top: var(--wp--preset--spacing--100)
+}
+
+.wp-block-cover,
+.wp-block-group {
+    
+    &.alignfull {
+        margin-block-start: 0;
+    }
+
+    &:not(.alignfull) {
+        border-radius: var(--wp--preset--border-radius--05);
+    }
+
 }
