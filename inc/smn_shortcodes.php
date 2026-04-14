@@ -40,3 +40,81 @@ function smn_casos_entradas_shortcode() {
     return $output;
 }
 add_shortcode('casos_entradas', 'smn_casos_entradas_shortcode');
+
+// Shortcode: [soluciones]
+function smn_soluciones_shortcode() {
+    $terms = get_terms([
+        'taxonomy' => 'tipo',
+        'parent' => 0,
+        'hide_empty' => false,
+    ]);
+    if (empty($terms) || is_wp_error($terms)) {
+        return '';
+    }
+
+    add_action(
+        'wp_enqueue_scripts',
+        function () {
+            wp_enqueue_style( 'wp-block-list' );
+        }
+    );
+
+    $output = '<div class="smn-soluciones-list">';
+    foreach ($terms as $term) {
+        // Imagen del término (thumbnail_id)
+        $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
+        $img_html = '';
+        if ($thumb_id) {
+            $img_url = wp_get_attachment_image_url($thumb_id, 'medium');
+            if ($img_url) {
+                $term_link = get_term_link($term);
+                $img_html .= '<div class="wp-block-image smn-soluciones-img-wrap">';
+                if (!is_wp_error($term_link)) {
+                    $img_html .= '<a href="' . esc_url($term_link) . '" class="smn-soluciones-img-link">';
+                }
+                $img_html .= '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($term->name) . '" class="smn-soluciones-img" />';
+                if (!is_wp_error($term_link)) {
+                    $img_html .= '</a>';
+                }
+                $img_html .= '</div>';
+            }
+        }
+        // Nombre del término con enlace
+        $term_link = get_term_link($term);
+        if (!is_wp_error($term_link)) {
+            $name_html = '<h3 class="smn-soluciones-nombre"><a href="' . esc_url($term_link) . '" class="smn-soluciones-nombre-link">' . esc_html($term->name) . '</a></h3>';
+        } else {
+            $name_html = '<h3 class="smn-soluciones-nombre">' . esc_html($term->name) . '</h3>';
+        }
+        // Términos hijos con enlaces
+        $children = get_terms([
+            'taxonomy' => 'tipo',
+            'parent' => $term->term_id,
+            'hide_empty' => false,
+        ]);
+        $children_html = '';
+        if (!empty($children) && !is_wp_error($children)) {
+            $children_html .= '<ul class="smn-soluciones-hijos wp-block-list is-style-arrow-list">';
+            foreach ($children as $child) {
+                $child_link = get_term_link($child);
+                if (!is_wp_error($child_link)) {
+                    $children_html .= '<li><a href="' . esc_url($child_link) . '" class="smn-soluciones-hijo-link">' . esc_html($child->name) . '</a></li>';
+                } else {
+                    $children_html .= '<li>' . esc_html($child->name) . '</li>';
+                }
+            }
+            $children_html .= '</ul>';
+        }
+        // Título "Tipos" traducible
+        $tipos_title = '<div class="has-caption-font-size smn-soluciones-tipos-title">' . esc_html__('Tipos', 'sorribes') . '</div>';
+        // Composición de columnas usando wp-block-columns
+        $output .= '<div class="smn-soluciones-row wp-block-columns is-layout-flex">'
+            . '<div class="smn-soluciones-col smn-soluciones-col-img wp-block-column">' . $img_html . '</div>'
+            . '<div class="smn-soluciones-col smn-soluciones-col-nombre wp-block-column">' . $name_html . '</div>'
+            . '<div class="smn-soluciones-col smn-soluciones-col-tipos wp-block-column">' . $tipos_title . $children_html . '</div>'
+            . '</div>';
+    }
+    $output .= '</div>';
+    return $output;
+}
+add_shortcode('soluciones', 'smn_soluciones_shortcode');

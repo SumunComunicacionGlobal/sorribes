@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../../plugins/presupuestador-csv-cf7"
+		},
+		{
+			"path": "../../plugins/send-pdf-for-contact-form-7"
 		}
 	],
 	"settings": {}
