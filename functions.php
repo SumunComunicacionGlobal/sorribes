@@ -7,7 +7,10 @@
  * @package _sumun
  */
 
-
+define( 'CATALOGO_ID', 445 );
+define( 'PRESUPUESTO_ID', 129 );
+define( 'CONTACTO_ID', 24 );
+define( 'THUMBNAIL_ID', 277 );
 
 if ( ! function_exists( 'smn_styles' ) ) :
 
@@ -52,6 +55,9 @@ require get_template_directory() . '/inc/smn_register-blocks.php';
 // Shortcodes
 require get_template_directory() . '/inc/smn_shortcodes.php';
 
+// Hooks
+require get_template_directory() . '/inc/smn_hooks.php';
+
 /**
  * Implement the Custom Header feature.
  */
@@ -80,3 +86,7 @@ require get_template_directory() . '/inc/customizer.php';
 
 // Testing block theme functionality in a classic theme
 //include_once get_template_directory() . '/functions-hybrid.php';
+
+function is_blog() {
+	return ( is_category() || is_home() || is_single() || is_tag() ) && 'post' === get_post_type();
+}

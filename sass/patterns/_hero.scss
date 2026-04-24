@@ -2,6 +2,23 @@
     position: relative;
 }
 
+#hero {
+    margin-bottom: var(--wp--preset--spacing--30);
+
+    .page-header {
+        max-width: 50rem;
+        margin-left: 0;
+    }
+
+    .page-description {
+        margin-bottom: var(--wp--preset--spacing--30);
+    }
+
+    .wp-block-cover__image-background {
+        opacity: .8;
+    }
+}
+
 #masthead {
     transition: all 0.3s ease;
 
@@ -15,4 +32,32 @@
 }
 body:not(.scrolled) #masthead {
     background-color: transparent !important;
+}
+
+.menu-toggle {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 2rem), calc(100% - 2rem) 100%, 0 100%);
+}
+
+.hero-column-second {
+    flex: 0 0 33%;
+    max-width: 33%;
+
+    .is-style-card {
+        padding-top: 2rem;
+        
+        &:before {
+            content: "";
+            opacity: .2;
+            position: absolute;
+            top: 2rem;
+            z-index: 0;
+            left: calc(100% - 8rem);
+            height: 3rem;
+            right: 0;
+            background-image: url('./assets/img/decoracion-rombos.svg');
+            background-repeat: no-repeat;
+            background-position: center left;
+            background-size: cover;
+        }
+    }
 }

@@ -2,6 +2,7 @@
 
 a.stretched-link, .stretched-link > a {
     position: initial !important;
+    text-decoration: none;
 
     &::after {
         position: absolute;
@@ -61,4 +62,27 @@ a.stretched-link, .stretched-link > a {
 
 .uppercase {
     text-transform: uppercase;
+}
+
+:root {
+    --smn-cover-bevel-size: 4rem;
+}
+
+@media ($above-tablet) {
+    :root {
+        --smn-cover-bevel-size: 10rem;
+    }
+}
+
+.bisel-abajo-derecha {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--smn-cover-bevel-size)), calc(100% - var(--smn-cover-bevel-size)) 100%, 0 100%);
+}
+.bisel-arriba-derecha {
+    clip-path: polygon(0 0, calc(100% - var(--smn-cover-bevel-size)) 0, 100% var(--smn-cover-bevel-size), 100% 100%, 0 100%);
+}
+.bisel-arriba-izquierda {
+    clip-path: polygon(var(--smn-cover-bevel-size) 0, 100% 0, 100% 100%, 0 100%, 0 var(--smn-cover-bevel-size));
+}
+.bisel-abajo-izquierda {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, var(--smn-cover-bevel-size) 100%, 0 calc(100% - var(--smn-cover-bevel-size)));
 }

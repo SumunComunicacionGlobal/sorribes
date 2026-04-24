@@ -1,5 +1,8 @@
 @use '../abstracts/mixins' as *;
 
+:root :where(.wp-element-button:not(.has-background), .wp-block-button__link:not(.has-background)) {
+	background: var(--wp--preset--gradient--primary);
+}
 .wp-block-buttons .wp-block-button:not([class*="-with-arrow"]) .wp-block-button__link {
 	transition: transform 0.3s ease;
 	

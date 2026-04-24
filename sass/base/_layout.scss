@@ -43,7 +43,7 @@ body .is-layout-flow {
 
     .body-lines--inner {
         position: relative;
-        z-index: 2;
+        // z-index: 2;
         max-width: var(--wp--custom--layout--content);
         margin: 0 auto;
         padding: 1rem;
@@ -54,9 +54,9 @@ body .is-layout-flow {
         top: 0;
         height: 100vh;
         width: 1px;
-        border-right: 1px dashed var(--wp--preset--color--neutral-60);
+        border-right: 1px dashed var(--wp--preset--color--neutral-50);
         opacity: 0.5;
-        z-index: 1;
+        // z-index: 1;
 
         @for $i from 1 through 5 {
             &:nth-child(#{$i}) {
@@ -66,6 +66,21 @@ body .is-layout-flow {
     }
 }
 
+.wrapper {
+    padding-top: var(--wp--preset--spacing--40);
+    padding-bottom: var(--wp--preset--spacing--40);
+}
+
+#primary {
+    position: relative;
+    z-index: 2;
+}
+
+.wp-block-group.has-neutral-white-background-color {
+    background-color: rgba(255,255,255,.8) !important;
+}
+
+#hero,
 #primary > article > .entry-content > *:first-child {
     padding-top: var(--wp--preset--spacing--100)
 }
@@ -81,4 +96,13 @@ body .is-layout-flow {
         border-radius: var(--wp--preset--border-radius--05);
     }
 
+}
+
+.smn-default-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+}
+.smn-archive-posts-grid,
+.smn-archive-posts-grid:last-child {
+    margin-top: var(--wp--preset--spacing--30);
+    margin-bottom: var(--wp--preset--spacing--80);
 }

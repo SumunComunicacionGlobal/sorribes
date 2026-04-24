@@ -1,3 +1,8 @@
+p,
+:root :where(.is-layout-constrained) p {
+    margin-block-start: 1em;
+}
+
 label {
     font-size: var(--wp--preset--font-size--small);
 }
@@ -17,6 +22,11 @@ label {
     padding: 0.25em 0.75em;
     border: 1px solid;
     border-radius: 9999px;
+    margin-bottom: 0;
+
+    + * {
+        margin-block-start: 0;
+    }
 
     &:before {
         content: "";
@@ -32,7 +42,35 @@ label {
 
     &,
     * {
-        font-family: var(--wp--preset--font-family--font-caption);
+        font-family: var(--wp--preset--font-family--futuristic);
         text-transform: uppercase;
     }
+}
+
+.entry-meta {
+    color: var(--wp--preset--color--primary-30);
+
+    .is-style-pill {
+        font-size: var(--wp--preset--font-size--caption);
+    }
+}
+
+.file-size {
+    font-size: var(--wp--preset--font-size--caption);
+    color: var(--wp--preset--color--neutral-60);
+}
+.descargable-title {
+    font-weight: 600;
+}
+
+mark {
+    background-color: transparent;
+}
+
+.terms-shortcode-header {
+    max-width: 40rem;
+}
+
+#sfm-sidebar .sfm-menu li a, #sfm-sidebar .sfm-chapter, #sfm-sidebar .sfm-back-parent {
+    text-transform: none !important;
 }

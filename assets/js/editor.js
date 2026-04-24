@@ -108,6 +108,14 @@ wp.domReady( () => {
 			name: 'margin-vertical',
 			label: 'Margin vertical (top & bottom 80px)',
 		},
+		{
+			name: 'card',
+			label: 'Card',
+		},
+		{
+			name: 'caracteristicas-grid',
+			label: 'Grid características',
+		},
 	] );
 
 	wp.blocks.registerBlockStyle('core/navigation', [

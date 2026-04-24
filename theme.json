@@ -54,11 +54,22 @@
     "color": {
       "custom": false,
       "customDuotone": false,
-      "customGradient": false,
+      "customGradient": true,
       "defaultGradients": false,
       "defaultPalette": false,
       "link": false,
-      "gradients": [],
+      "gradients": [
+        {
+          "name": "Primary",
+          "slug": "primary",
+          "gradient": "linear-gradient(135deg, var(--wp--preset--color--primary) 0%, var(--wp--preset--color--primary-80) 100%)"
+        },
+        {
+          "name": "Secondary",
+          "slug": "secondary",
+          "gradient": "linear-gradient(135deg, var(--wp--preset--color--secondary) 0%, var(--wp--preset--color--secondary-80) 100%)"
+        }
+      ],
       "palette": [
         {
           "name": "background",
@@ -99,6 +110,11 @@
           "name": "Neutral-30",
           "slug": "neutral-30",
           "color": "#DBDDE6"
+        },
+        {
+          "name": "Neutral-50",
+          "slug": "neutral-50",
+          "color": "#747474"
         },
         {
           "name": "Neutral-60",
@@ -358,8 +374,8 @@
             }
           ],
           "fontFamily": "\"Punoer\", sans-serif",
-          "name": "Caption Font",
-          "slug": "font-caption"
+          "name": "Futuristic Font",
+          "slug": "futuristic"
         }
       ],
       "fontSizes": [
@@ -494,7 +510,9 @@
 			},
 			"caption": {
 				"typography": {
-					"fontFamily": "var(--wp--preset--font-family--font-caption)"
+					"fontFamily": "var(--wp--preset--font-family--font-main)",
+          "fontSize": "var(--wp--preset--font-size--caption)",
+          "lineHeight": "var(--wp--custom--line-height--tiny)"
 				}
 			},
 			"h1": {

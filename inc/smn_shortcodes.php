@@ -86,6 +86,14 @@ function smn_soluciones_shortcode() {
         } else {
             $name_html = '<h3 class="smn-soluciones-nombre">' . esc_html($term->name) . '</h3>';
         }
+
+        $description_home = get_field('term_description_home', 'tipo_' . $term->term_id);
+        if ( !$description_home ) {
+            $description_home = term_description($term);
+        }
+        if ( $description_home ) {
+            $name_html .= '<div class="smn-soluciones-descripcion has-small-font-size">' . wp_kses_post(wpautop($description_home)) . '</div>';
+        }  
         // Términos hijos con enlaces
         $children = get_terms([
             'taxonomy' => 'tipo',
@@ -118,3 +126,152 @@ function smn_soluciones_shortcode() {
     return $output;
 }
 add_shortcode('soluciones', 'smn_soluciones_shortcode');
+
+// Shortcode: [terms taxonomy="TAXONOMY"]
+function smn_terms_shortcode($atts) {
+    $atts = shortcode_atts([
+        'taxonomy' => '',
+        'parent' => 0,
+        'title' => 'auto',
+    ], $atts, 'terms');
+
+    $taxonomy = $atts['taxonomy'];
+    $parent = intval($atts['parent']);
+    $title = $atts['title'];
+
+    if ( is_tax() ) {
+        $queried_object = get_queried_object();
+        $taxonomy = $queried_object->taxonomy;
+        if ( $queried_object && isset( $queried_object->term_id ) ) {
+            $parent = $queried_object->term_id;
+        }
+    }
+
+    if (empty($taxonomy) || !taxonomy_exists($taxonomy)) {
+        return '';
+    }
+
+
+    $terms = get_terms([
+        'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+        'parent' => $parent,
+    ]);
+    if (empty($terms) || is_wp_error($terms)) {
+        return '';
+    }
+
+    $output = '';
+
+    if ( is_tax() && $title == 'auto' ) {
+        $title = sprintf( esc_html__( 'Tipos de %s', 'sorribes' ), '<mark class="has-inline-color has-primary-30-color">' . strtolower( $queried_object->name ) ) . '</mark>';
+    }
+
+    if ( $title ) {
+        $output .= '<div class="wp-block-group">';
+            $output .= '<h2 class="terms-shortcode-header">' . $title . '</h2>';
+        $output .= '</div>';
+    }
+
+
+    $output .= '<div class="is-layout-grid smn-default-grid smn-terms-grid">';
+    foreach ($terms as $term) {
+        $term_link = get_term_link($term);
+        $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
+        $img_html = '';
+        if ($thumb_id) {
+            $img_url = wp_get_attachment_image_url($thumb_id, 'medium');
+            if ($img_url) {
+                $img_html = '<div class="smn-terms-img-wrap"><img src="' . esc_url($img_url) . '" alt="' . esc_attr($term->name) . '" class="smn-terms-img" /></div>';
+            }
+        }
+        $output .= '<div class="wp-block-cover smn-terms-card">';
+        if ($thumb_id) {
+            // Extract image URL for background
+            $output .= wp_get_attachment_image($thumb_id, 'medium_large', false, ['class' => 'wp-block-cover__image-background']);
+        }
+        $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>';
+        $output .= '<div class="wp-block-cover__inner-container">';
+        $output .= '<h3 class="smn-terms-title"><a href="' . esc_url($term_link) . '" class="stretched-link">' . esc_html($term->name) . '</a></h3>';
+
+        $description = get_field('term_description_pt_archive', $taxonomy . '_' . $term->term_id);
+        if ( $description ) {
+            $output .= '<div class="smn-terms-description has-small-font-size">' . wp_kses_post(wpautop($description)) . '</div>';
+        }
+
+        $output .= '</div>';
+        $output .= '</div>';
+    }
+    $output .= '</div>';
+
+    if ( is_tax() ) {
+        ob_start();
+        block_template_part( 'area-pedir-presupuesto' );
+        $output .= ob_get_clean();
+    }
+
+    return $output;
+}
+add_shortcode('terms', 'smn_terms_shortcode');
+
+/**
+ * Shortcode: [tipo_menu]
+ * Generates a hierarchical menu based on the "tipo" taxonomy.
+ */
+function smn_tipo_menu_shortcode() {
+    $terms = get_terms([
+        'taxonomy' => 'tipo',
+        'parent' => 0,
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC',
+    ]);
+    if (empty($terms) || is_wp_error($terms)) {
+        return '';
+    }
+
+    // Recursive function to build menu
+    function smn_tipo_menu_list($parent_id = 0) {
+        $children = get_terms([
+            'taxonomy' => 'tipo',
+            'parent' => $parent_id,
+            'hide_empty' => false,
+            'orderby' => 'name',
+            'order' => 'ASC',
+        ]);
+        if (empty($children) || is_wp_error($children)) {
+            return '';
+        }
+        $level = 1;
+        $html = '<ul class="sfm-menu sfm-menu-level-'. $level .' smn-tipo-menu">';
+        foreach ($children as $term) {
+            $term_link = get_term_link($term);
+            $html .= '<li class="sfm-menu-item-'. $term->term_id .' smn-tipo-menu-item">';
+            if (!is_wp_error($term_link)) {
+                $html .= '<a href="' . esc_url($term_link) . '" class="smn-tipo-menu-link">' . esc_html($term->name) . '</a>';
+            } else {
+                $html .= esc_html($term->name);
+            }
+            // Recursively add children
+            $html .= smn_tipo_menu_list($term->term_id);
+            $html .= '</li>';
+        }
+        $html .= '</ul>';
+        return $html;
+    }
+
+    // Top-level menu
+    $output = '<nav class="smn-tipo-menu-nav" aria-label="' . esc_attr__('Menú de Tipos', 'sorribes') . '">';
+    $output .= smn_tipo_menu_list(0);
+    $output .= '</nav>';
+
+    return $output;
+}
+add_shortcode('tipo_menu', 'smn_tipo_menu_shortcode');
+
+add_shortcode( 'galeria', 'smn_galeria_shortcode' );
+function smn_galeria_shortcode() {
+    ob_start();
+    get_template_part( 'parts/galeria' );
+    return ob_get_clean();
+}

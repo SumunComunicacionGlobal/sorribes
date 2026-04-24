@@ -1,15 +1,28 @@
-.rank-math-breadcrumb {
+.breadcrumb {
 
     p {
         font-size: var(--wp--preset--font-size--caption);
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1px;
+        display: flex;
+        align-items: flex-start;
+        gap: .25em;
 
         a {
             text-decoration: none;
         }
     }
     
+    a,
+    span {
+        display: inline-block;
+
+        &.last {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+    }
 
 }

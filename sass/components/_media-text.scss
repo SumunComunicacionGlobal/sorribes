@@ -1,9 +1,24 @@
 @use '../abstracts/mixins' as *;
 
 .wp-block-media-text {
+    position: relative;
+    border: 1px solid var(--wp--preset--color--neutral-30);
+    border-radius: var(--wp--custom--border-radius--1);
+    padding: var(--wp--preset--spacing--20);
 
     .wp-block-media-text__content {
         padding: 20%;
+
+        > *:first-child {
+            margin-block-start: 0;
+        }
+
+        .has-background {
+            padding: var(--wp--custom--layout--gap);
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
     }
     
     &.has-media-on-the-right {

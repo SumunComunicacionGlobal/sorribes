@@ -1,6 +1,35 @@
 @use '../abstracts/mixins' as *;
 
-.wp-block-media-text__media img,
-.wp-block-image img {
+#primary {
+
+    .wp-block-media-text__media img,
+    .wp-block-image img {
+        border-radius: var(--wp--custom--border-radius--05);
+    }
+
+}
+
+.hero-side-image {
     border-radius: var(--wp--custom--border-radius--05);
+}
+
+.wp-block-gallery {
+    
+    &.has-nested-images figure.wp-block-image {
+        flex-grow: 0;
+    }
+
+    .wp-block-image img:not(.hide) {
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: 1px solid var(--wp--preset--color--neutral-30);
+    }
+}
+
+.lightbox-image-container {
+
+    .wp-block-image img {
+        object-fit: contain !important;
+    }
+
 }

@@ -107,3 +107,15 @@ ul.is-style-check-list {
 		left: 0;
 	}
 }
+
+ul.search-results-list {
+	margin-bottom: var(--wp--preset--spacing--30) !important;
+
+	li {
+
+		&:before {
+			top: .2em;	
+		}
+
+	}
+}

@@ -11,6 +11,12 @@
 
 ?>
 
+	<?php 
+	if ( is_singular( 'solucion' ) ) {
+		block_template_part( 'prefooter-producto' ); 
+	}	
+	?>
+
 	<footer id="colophon" class="site-footer">
 		<?php block_template_part( 'footer' ); ?>
 	</footer><!-- #colophon -->

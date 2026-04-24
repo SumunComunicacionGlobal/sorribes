@@ -13,25 +13,16 @@ if ( ! function_exists( 'smn_hybrid_posted_on' ) ) :
 	 */
 	function smn_hybrid_posted_on() {
 		$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-		if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
-			$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
-		}
 
 		$time_string = sprintf(
 			$time_string,
 			esc_attr( get_the_date( DATE_W3C ) ),
-			esc_html( get_the_date() ),
-			esc_attr( get_the_modified_date( DATE_W3C ) ),
-			esc_html( get_the_modified_date() )
+			esc_html( get_the_date() )
 		);
 
-		$posted_on = sprintf(
-			/* translators: %s: post date. */
-			esc_html_x( 'Posted on %s', 'post date', 'sorribes' ),
-			'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
-		);
+		$posted_on = $time_string;
 
-		echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<span class="posted-on has-caption-font-size">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	}
 endif;
@@ -152,6 +143,48 @@ if ( ! function_exists( 'smn_hybrid_post_thumbnail' ) ) :
 		endif; // End is_singular().
 	}
 endif;
+
+function smn_get_breadcrumb() {
+
+	if ( is_front_page() ) return false;
+
+	ob_start();
+
+	if(function_exists('bcn_display')) {
+		echo '<div class="breadcrumb" typeof="BreadcrumbList" vocab="https://schema.org/">';
+			echo '<div class="breadcrumb-inner">';
+				bcn_display();
+			echo '</div>';
+		echo '</div>';
+	} elseif ( function_exists( 'rank_math_the_breadcrumbs') ) {
+		echo '<div class="breadcrumb">';
+			echo '<div class="breadcrumb-inner">';
+				rank_math_the_breadcrumbs(); 
+			echo '</div>';
+		echo '</div>';
+	} elseif ( function_exists('yoast_breadcrumb') ) {
+		yoast_breadcrumb( '<div id="breadcrumbs" class="breadcrumb"><div class="breadcrumb-inner">','</div></div>' );
+	}
+
+	$r = ob_get_clean();
+
+	if ( $r ) {
+		return '<div class="breadcrumb-wrapper py-1">' . $r . '</div>';
+	}
+
+}
+
+function smn_breadcrumb() {
+	
+	$r = smn_get_breadcrumb();
+
+	if ( $r ) {
+		echo '<div class="container">';
+			echo $r;
+		echo '</div>';
+	}
+
+}
 
 if ( ! function_exists( 'wp_body_open' ) ) :
 	/**

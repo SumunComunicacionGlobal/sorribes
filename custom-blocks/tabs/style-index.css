@@ -1,5 +1,5 @@
 :root {
-    --smn-tabs-row-gap: var(--wp--style--gap, 2em);
+    --smn-tabs-row-gap: var(--wp--style--gap, 1em);
     --smn-tabs-column-gap: var(--wp--style--gap, 2em);
 }
 
@@ -13,24 +13,47 @@
     align-items: center;
     -moz-column-gap: var(--smn-tabs-column-gap);
     column-gap: var(--smn-tabs-column-gap);
-    display: grid;
+    /* display: grid; */
     flex: 1;
     justify-content: flex-start;
-    row-gap: 0 !important;
+    /* row-gap: 0 !important; */
 
     &.is-layout-flex {
-        display: grid;
+        /* display: grid; */
+        gap: 1em;
     }
 
     .wp-block-smn-tab {
         order: -1;
+        margin-bottom: 1em;
+
+        .wp-block-smn-tab__label {
+
+            background-color: var(--wp--preset--color--neutral-30);
+            border-radius: var(--wp--custom--border-radius--rounded);
+            padding: .5em var(--wp--preset--spacing--40);
+
+            &:hover {
+                background-color: var(--wp--preset--color--neutral-10);
+            }
+        }
+
+        &.active .wp-block-smn-tab__label {
+            background-color: var(--wp--preset--color--neutral-white);
+        }
+
+        &:not(.active) .wp-block-smn-tab__label {
+            cursor: pointer;
+        }
+
     }
 
     .wp-block-smn-tab-content {
         display: none;
         opacity: 0;
         transition: opacity .3s ease, display .3s ease allow-discrete; 
-        grid-column: 1 / -1;
+        /* grid-column: 1 / -1; */
+        flex: 0 0 100%;
         margin: 0;
         order: 1;
 
@@ -41,10 +64,10 @@
         }
     }
 
-    .wp-block-smn-tab.active label,
+    /* .wp-block-smn-tab.active label,
     .wp-block-smn-tab__label.active {
-        font-weight: 700;
-    }
+
+    } */
 
     &.is-vertical {
         grid-auto-flow: column;
@@ -64,14 +87,14 @@
     display: flex;
     flex-direction: column;
     justify-content: normal;
-    row-gap: 0;
+    /* row-gap: 0; */
 
     .wp-block-smn-tabs__tabs {
         align-items: center;
         -moz-column-gap: var(--smn-tabs-column-gap);
         column-gap: var(--smn-tabs-column-gap);
         display: flex;
-        row-gap: var(--smn-tabs-row-gap);
+        /* row-gap: var(--smn-tabs-row-gap); */
 
         .wp-block-smn-tab__label {
             cursor: pointer;

@@ -50,7 +50,8 @@ textarea {
 button[type="submit"], input[type="submit"] {
 	display: block;
 	width: 100%;
-	background-color: var(--wp--preset--color--primary);
+	// background-color: var(--wp--preset--color--primary);
+	background: var(--wp--preset--gradient--primary);
 	color: var(--wp--preset--color--neutral-white);
 	border: 1px solid var(--wp--preset--color--primary);
 	font-weight: bold;

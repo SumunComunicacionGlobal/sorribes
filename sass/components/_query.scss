@@ -52,7 +52,7 @@
             .wp-block-post-excerpt {
                 transition: all .5s ease-in-out;
                 position: absolute;
-                bottom: -64px;
+                bottom: -96px;
             }
 
             .wp-block-cover__inner-container {
@@ -131,15 +131,18 @@
     }
 
     .smn-soluciones-col-img {
-        width: 30%;
+        flex: 0 0 23%;
+        max-width: 23%;
     }
 
     .smn-soluciones-col-nombre {
-        width: 40%;
+        flex: 0 0 47%;
+        max-width: 47%;
     }
 
     .smn-soluciones-col-tipos {
         width: 30%;
+        max-width: 30%;
     }
 
     .smn-soluciones-nombre {

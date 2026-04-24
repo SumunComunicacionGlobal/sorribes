@@ -56,6 +56,21 @@
     @media ($below-mobile) {
         grid-template-columns: 1fr;
     }
+
+    &.is-style-caracteristicas-grid {
+
+        > .wp-block-group {
+            border: 1px solid var(--wp--preset--color--neutral-30);
+            border-radius: var(--wp--custom--border-radius--1);
+            padding: var(--wp--preset--spacing--10);
+            font-size: var(--wp--preset--font-size--small);
+            line-height: var(--wp--custom--line-height--headings);
+            
+            * {
+                margin: 0 0 0.5em;
+            }
+        }
+    }
 }
 
 .wp-block-group.is-position-sticky {

@@ -26,4 +26,34 @@
         }
     }
 
+    &.smn-terms-card {
+        position: relative;
+        align-items: flex-end;
+
+        .wp-block-cover__inner-container {
+            position: initial;
+        }
+
+        .wp-block-cover__background {
+            opacity: 1;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 50%, var(--wp--preset--color--neutral-100) 100%);
+        }
+
+        .wp-block-cover__image-background {
+            opacity: .96;
+            transition: transform .5s ease-in-out;
+        }
+
+        &:hover {
+            .wp-block-cover__image-background {
+                transform: scale(1.05);
+            }
+        }
+
+        .smn-terms-title {
+            margin-bottom: var(--wp--preset--spacing--10);
+        }
+
+    }
+
 }
