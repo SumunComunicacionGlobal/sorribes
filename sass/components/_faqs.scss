@@ -11,7 +11,7 @@
         align-items: flex-start;
 
         .rank-math-list-item {
-            flex: 1 1 calc(50% - var(--wp--preset--spacing--20));
+            flex: 0 0 calc(50% - var(--wp--preset--spacing--20));
         }
     }
 

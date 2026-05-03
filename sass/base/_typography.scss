@@ -10,6 +10,9 @@ label {
 .wp-block-post-title a {
 	text-decoration: none;
 }
+.has-big-font-size {
+    line-height: var(--wp--custom--line-height--headings);
+}
 
 [class*="has-heading-"][class*="-font-size"] {
     line-height: var(--wp--custom--line-height--tiny);
