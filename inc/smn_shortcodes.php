@@ -275,3 +275,22 @@ function smn_galeria_shortcode() {
     get_template_part( 'parts/galeria' );
     return ob_get_clean();
 }
+
+/**
+ * Shortcode: [menu_featured]
+ * Displays the menu assigned to the 'featured-menu' location.
+ */
+function smn_menu_featured_shortcode() {
+    $menu = wp_nav_menu([
+        'theme_location' => 'featured-menu',
+        'container' => 'nav',
+        'container_class' => 'smn-featured-menu-nav',
+        'menu_class' => 'smn-featured-menu',
+        'echo' => false,
+    ]);
+    if (empty($menu)) {
+        return '';
+    }
+    return $menu;
+}
+add_shortcode('menu_featured', 'smn_menu_featured_shortcode');

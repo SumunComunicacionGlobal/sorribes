@@ -13,6 +13,24 @@ if (have_rows('files')) {
             if ($file_id) {
                 $url = wp_get_attachment_url($file_id);
                 $title = get_the_title($file_id) ? get_the_title($file_id) : basename($url);
+                if (stripos($title, '.pdf') !== false) {
+                    // Title contains .pdf
+                    // You can add your custom logic here if needed
+                    $title = str_replace(
+                    [
+                        '.pdf',
+                        '-',
+                    ],
+                    [ 
+                        '',
+                        ' ',
+                    ],
+                    $title);
+
+                    $title = mb_convert_case($title, MB_CASE_TITLE_SIMPLE, "UTF-8");
+                }
+                
+                $description = get_post_field('post_content', $file_id);
 
                 // Get file size
                 $file_path = get_attached_file($file_id);
@@ -32,8 +50,11 @@ if (have_rows('files')) {
                     echo '<img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/icons/icono-descarga.svg') . '" alt="' . __( 'Icono descarga', 'sorribes' ) . '" width="48" height="48" class="descargable-icon" /><br>';
                     echo '<a class="stretched-link" href="' . esc_url($url) . '" target="_blank" rel="noopener">';
                         echo '<span class="descargable-title">' . esc_html($title) . '</span>';
+                        if ($description) {
+                            echo '<span class="descargable-description">' . esc_html($description) . '</span>';
+                        }
                         if ($file_size) {
-                            echo '<br><span class="file-size">' . esc_html($file_size) . '</span>';
+                            echo '<span class="file-size">' . esc_html($file_size) . '</span>';
                         }
                     echo '</a>';
                 echo '</div>';

@@ -2,6 +2,11 @@
 
     background-image: url(./assets/img/fondo-ruido.gif);
 
+    > .wp-block-cover__inner-container {
+        padding-right: 1rem !important;
+        padding-left: 1rem !important;
+    }
+
     &.is-style-cover-contain-background { 
         .wp-block-cover__image-background {
             object-fit: contain;

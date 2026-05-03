@@ -52,7 +52,9 @@
             .wp-block-post-excerpt {
                 transition: all .5s ease-in-out;
                 position: absolute;
-                bottom: -96px;
+                bottom: -300px;
+                max-height: 5rem;
+                
             }
 
             .wp-block-cover__inner-container {
@@ -122,27 +124,42 @@
         }
     }
 
-    .smn-soluciones-row {
-        position: sticky;
-        top: 100px;
+    .wp-block-columns.smn-soluciones-row {
+        flex-wrap: wrap !important;
         background-color: var(--wp--preset--color--neutral-white);
         padding-top: 1.75em;
         border-top: 1px solid var(--wp--preset--color--neutral-30);
+
+        @media ($above-laptop) {
+            position: sticky;
+            top: 100px;
+        }
     }
 
     .smn-soluciones-col-img {
-        flex: 0 0 23%;
-        max-width: 23%;
+        flex: 0 0 23% !important;
+        max-width: 23% !important;
     }
 
     .smn-soluciones-col-nombre {
-        flex: 0 0 47%;
-        max-width: 47%;
+        flex: 1 0 calc(77% - var(--wp--custom--layout--gap)) !important;
+        max-width: calc(77% - var(--wp--custom--layout--gap)) !important;
+        order: -1;
     }
 
-    .smn-soluciones-col-tipos {
-        width: 30%;
-        max-width: 30%;
+    @media ($above-laptop) {
+        
+        .smn-soluciones-col-nombre {
+            order: unset;
+            flex: 0 0 47% !important;
+            max-width: 47% !important;
+        }
+        
+        .smn-soluciones-col-tipos {
+            width: 30%;
+            max-width: 30%;
+        }
+
     }
 
     .smn-soluciones-nombre {

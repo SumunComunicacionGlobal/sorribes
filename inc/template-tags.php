@@ -157,11 +157,7 @@ function smn_get_breadcrumb() {
 			echo '</div>';
 		echo '</div>';
 	} elseif ( function_exists( 'rank_math_the_breadcrumbs') ) {
-		echo '<div class="breadcrumb">';
-			echo '<div class="breadcrumb-inner">';
-				rank_math_the_breadcrumbs(); 
-			echo '</div>';
-		echo '</div>';
+			rank_math_the_breadcrumbs(); 
 	} elseif ( function_exists('yoast_breadcrumb') ) {
 		yoast_breadcrumb( '<div id="breadcrumbs" class="breadcrumb"><div class="breadcrumb-inner">','</div></div>' );
 	}
@@ -169,21 +165,16 @@ function smn_get_breadcrumb() {
 	$r = ob_get_clean();
 
 	if ( $r ) {
-		return '<div class="breadcrumb-wrapper py-1">' . $r . '</div>';
+		return $r;
 	}
 
 }
 
 function smn_breadcrumb() {
-	
 	$r = smn_get_breadcrumb();
-
 	if ( $r ) {
-		echo '<div class="container">';
-			echo $r;
-		echo '</div>';
+		echo $r; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
-
 }
 
 if ( ! function_exists( 'wp_body_open' ) ) :

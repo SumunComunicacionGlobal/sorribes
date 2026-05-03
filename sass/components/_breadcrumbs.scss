@@ -1,28 +1,51 @@
-.breadcrumb {
+@use '../abstracts/mixins' as *;
+
+.breadcrumb,
+.rank-math-breadcrumb {
+    
+    @media ($above-laptop) {
+        max-width: 80%;
+    }
 
     p {
+        margin: 0 0 var(--wp--preset--spacing--05);
         font-size: var(--wp--preset--font-size--caption);
         display: flex;
+        flex-wrap: wrap;
         align-items: flex-start;
         gap: .25em;
 
         a {
             text-decoration: none;
         }
-    }
     
-    a,
-    span {
-        display: inline-block;
-
-        &.last {
-            max-width: 300px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        > a,
+        > span {
             display: inline-block;
+
+            &.last {
+                max-width: 300px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                display: inline-block;
+            }
+
+            &:first-child {
+                padding-left: 1.5em;
+                background-image: url( 'https://sorribes.local/wp-content/uploads/favicon-sorribes.png' );
+                background-size: 1.2em auto;
+                background-repeat: no-repeat;
+                background-position: left center;
+            }
         }
 
+    }
+
+    + .wp-block-heading,
+    + .wp-block-post-title,
+    + * .page-title {
+        margin-top: 0;
     }
 
 }

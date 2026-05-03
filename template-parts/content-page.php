@@ -15,6 +15,10 @@
 		<?php
 		the_content();
 
+		get_template_part( 'parts/descargables' );
+
+		get_template_part( 'parts/galeria' );
+
 		wp_link_pages(
 			array(
 				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'sorribes' ),

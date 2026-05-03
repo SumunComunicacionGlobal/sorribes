@@ -1,11 +1,21 @@
-// Añade clase a body cuando se hace scroll
-window.addEventListener("scroll", function() {
+// Función para manejar la clase 'scrolled' en body
+function updateBodyScrolledClass() {
     if (window.scrollY > 50) {
         document.body.classList.add("scrolled");
     } else {
-        document.body.classList.remove("scrolled");
+        const entryContent = document.querySelector("body.page #primary > article > .entry-content");
+        const firstChild = entryContent ? entryContent.firstElementChild : null;
+        if (!firstChild || !firstChild.classList.contains("wp-block-cover")) {
+            document.body.classList.add("scrolled");
+        } else {
+            document.body.classList.remove("scrolled");
+        }
     }
-});
+}
+
+window.addEventListener("scroll", updateBodyScrolledClass);
+document.addEventListener("DOMContentLoaded", updateBodyScrolledClass);
+
 // Añade botones de scroll a la izquierda y derecha
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll(".is-style-group-horizontal-scroll-btns").forEach((content) => {

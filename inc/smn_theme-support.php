@@ -54,6 +54,7 @@ function smn_hybrid_setup() {
 	register_nav_menus(
 		array(
 			'primary-menu' => esc_html__( 'Primary', 'sorribes' ),
+			'featured-menu' => esc_html__( 'Featured', 'sorribes' ),
 		)
 	);
 

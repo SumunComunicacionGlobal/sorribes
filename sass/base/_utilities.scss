@@ -74,6 +74,7 @@ a.stretched-link, .stretched-link > a {
     }
 }
 
+#hero,
 .bisel-abajo-derecha {
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--smn-cover-bevel-size)), calc(100% - var(--smn-cover-bevel-size)) 100%, 0 100%);
 }

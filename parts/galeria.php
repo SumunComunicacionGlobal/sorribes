@@ -3,12 +3,21 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-$gallery_ids = false;
+$gallery_ids = [];
+$gallery_images = [];
 $wrap = false;
 
 if ( is_singular() ) {
     $wrap = true;
     $gallery_ids = get_field('product_image_gallery');
+    if ( $gallery_ids ) {
+        foreach ($gallery_ids as $id) {
+            $gallery_images[] = [
+                'title' => get_the_title(),
+                'id' => $id
+            ];
+        }
+    }
 } elseif ( is_tax( 'tipo' ) ) {
     
     $args = [
@@ -53,6 +62,7 @@ if ( is_singular() ) {
     $gallery_ids = array_unique($gallery_ids);
     shuffle($gallery_ids);
     $gallery_ids = array_slice($gallery_ids, 0, 12);
+
 
     // Optionally, filter $gallery_images to only include those in $gallery_ids
     $gallery_images = array_filter($gallery_images, function($img) use ($gallery_ids) {

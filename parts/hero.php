@@ -87,9 +87,10 @@ if ( ! $thumb_id || $thumb_width < 760 ) {
     <span aria-hidden="true" class="wp-block-cover__background has-background-dim-80 has-background-dim has-background has-neutral-100-background"></span>
     <div class="wp-block-cover__inner-container has-global-padding is-layout-constrained">
         <div class="wp-block-group">
-            <?php smn_breadcrumb(); ?>
             <div class="wp-block-columns is-layout-flex hero-columns">
                 <div class="wp-block-column hero-column-first">
+        
+                    <?php smn_breadcrumb(); ?>
                     
                     <header class="page-header">
                         <h1 class="page-title <?php echo $title_class; ?>"><?php echo $title; ?></h1>

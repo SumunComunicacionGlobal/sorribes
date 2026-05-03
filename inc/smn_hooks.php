@@ -24,6 +24,43 @@ function smn_filter_render_block_data($parsed_block) {
 }
 add_filter('render_block_data', 'smn_filter_render_block_data');
 
+add_filter('render_block', 'smn_add_breadcrumbs_to_headings', 10, 2);
+function smn_add_breadcrumbs_to_headings($block_content, $block) {
+    
+    if ( is_front_page() ) return $block_content;
+
+    // Only on the frontend, not in admin or REST
+    if (is_admin() || defined('REST_REQUEST') && REST_REQUEST) {
+        return $block_content;
+    }
+
+    // Check if block is core/heading with h1 or core/post-title
+    $is_h1 = (
+        isset($block['blockName']) &&
+        $block['blockName'] === 'core/heading' &&
+        isset($block['attrs']['level']) &&
+        $block['attrs']['level'] == 1
+    );
+    $is_post_title = (
+        isset($block['blockName']) &&
+        $block['blockName'] === 'core/post-title' &&
+        isset($block['attrs']['level']) &&
+        $block['attrs']['level'] == 1
+    );
+
+    if ($is_h1 || $is_post_title) {
+        // Render breadcrumbs using Rank Math
+        ob_start();
+        if (function_exists('rank_math_the_breadcrumbs')) {
+            rank_math_the_breadcrumbs();
+        }
+        $breadcrumbs = ob_get_clean();
+        return $block_content . $breadcrumbs;
+    }
+
+    return $block_content;
+}
+
 function smn_filter_get_the_archive_title($title) {
     if (is_category()) {
         $title = single_cat_title('', false);
@@ -40,7 +77,8 @@ function smn_filter_get_the_archive_title($title) {
 }
 add_filter('get_the_archive_title', 'smn_filter_get_the_archive_title');
 
-add_filter('rank_math/frontend/breadcrumb/items', function($crumbs) {
+add_filter('rank_math/frontend/breadcrumb/items', 'smn_modify_rank_math_breadcrumbs', 10, 1);
+function smn_modify_rank_math_breadcrumbs($crumbs) {
 
     if ( is_tax( 'tipo' ) ) {
 
@@ -62,7 +100,7 @@ add_filter('rank_math/frontend/breadcrumb/items', function($crumbs) {
         
         if (
             isset($crumb[1]) &&
-            (strpos($crumb[1], get_post_type_archive_link('solucion')) !== false)
+            get_post_type_archive_link('solucion') === $crumb[1]
         ) {
             // Replace with the CATALOGO_ID page
             $crumbs[$i][0] = get_the_title(CATALOGO_ID);
@@ -73,7 +111,7 @@ add_filter('rank_math/frontend/breadcrumb/items', function($crumbs) {
     }
 
     return $crumbs;
-});
+}
 
 function cmplz_show_banner_on_click() {
 	?>
@@ -167,3 +205,15 @@ add_filter('wp_nav_menu_objects', function($items, $args) {
     return $items;
 }, 20, 2);
 
+add_action('wp_footer', function() {
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('a[href$=".pdf"]').forEach(function(link) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+        });
+    });
+    </script>
+    <?php
+});
