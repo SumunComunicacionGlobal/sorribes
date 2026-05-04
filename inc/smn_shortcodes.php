@@ -62,7 +62,8 @@ function smn_soluciones_shortcode() {
     $output = '<div class="smn-soluciones-list">';
     foreach ($terms as $term) {
         // Imagen del término (thumbnail_id)
-        $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
+        // $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
+        $thumb_id = smn_get_term_thumbnail_id($term);
         $img_html = '';
         if ($thumb_id) {
             $img_url = wp_get_attachment_image_url($thumb_id, 'medium');
@@ -177,7 +178,8 @@ function smn_terms_shortcode($atts) {
     $output .= '<div class="is-layout-grid smn-default-grid smn-terms-grid">';
     foreach ($terms as $term) {
         $term_link = get_term_link($term);
-        $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
+        // $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
+        $thumb_id = smn_get_term_thumbnail_id($term);
         $img_html = '';
         if ($thumb_id) {
             $img_url = wp_get_attachment_image_url($thumb_id, 'medium');

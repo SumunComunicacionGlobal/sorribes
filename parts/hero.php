@@ -27,23 +27,15 @@ if ( is_singular() ) {
         $thumb_id = get_post_thumbnail_id();
     }
 
-    if ( $thumb_id ) {
-        $image = wp_get_attachment_metadata( $thumb_id );
-        if ( isset( $image['width'] ) ) {
-            $thumb_width = $image['width'];
-            if ( $thumb_width < 760 ) {
-                $side_image = true;
-            }
-        }
-    }
-
 } elseif ( is_archive() ) {
     $title = get_the_archive_title();
     $description = wpautop( get_the_archive_description() );
     $cta = true;
     if ( is_tax() ) {
         $term = get_queried_object();
-        $thumb_id = get_term_meta( $term->term_id, 'thumbnail_id', true );
+        // $thumb_id = get_term_meta( $term->term_id, 'thumbnail_id', true );
+        $thumb_id = smn_get_term_thumbnail_id( $term );
+
         if ( !$description ) {
             $card_description = get_field( 'term_description_pt_archive', $term );
             if ( $card_description ) {
@@ -74,6 +66,15 @@ if ( is_singular( 'solucion' ) ) {
     $formulario_hero = true;
 }
 
+if ( $thumb_id ) {
+    $image = wp_get_attachment_metadata( $thumb_id );
+    if ( isset( $image['width'] ) ) {
+        $thumb_width = $image['width'];
+        if ( $thumb_width < 760 ) {
+            $side_image = true;
+        }
+    }
+}
 
 if ( ! $thumb_id || $thumb_width < 760 ) {
     $thumb_id = THUMBNAIL_ID;

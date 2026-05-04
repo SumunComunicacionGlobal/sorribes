@@ -82,3 +82,46 @@ function smn_add_body_lines_element() {
 		</div>';
 }
 add_action( 'wp_body_open', 'smn_add_body_lines_element' );
+
+/**
+ * Obtiene la imagen destacada (thumbnail_id) de un término.
+ * Si no existe, obtiene la imagen destacada del primer post tipo "solucion" que tenga ese término.
+ *
+ * @param WP_Term|int $term El objeto término o su ID.
+ * @return int|null ID de la imagen destacada o null si no existe.
+ */
+function smn_get_term_thumbnail_id( $term ) {
+	$term_id = is_object( $term ) ? $term->term_id : intval( $term );
+
+	// Intenta obtener el thumbnail_id del término.
+	$thumbnail_id = get_term_meta( $term_id, 'thumbnail_id', true );
+	if ( ! empty( $thumbnail_id ) ) {
+		return (int) $thumbnail_id;
+	}
+
+	// Si no existe, busca el primer post tipo "solucion" con ese término.
+	$args = array(
+		'post_type'      => 'solucion',
+		'posts_per_page' => 1,
+		'tax_query'      => array(
+			array(
+				'taxonomy' => get_term( $term_id )->taxonomy,
+				'field'    => 'term_id',
+				'terms'    => $term_id,
+			),
+		),
+		'post_status'    => 'publish',
+		'fields'         => 'ids',
+	);
+
+	$query = new WP_Query( $args );
+	if ( ! empty( $query->posts ) ) {
+		$post_id = $query->posts[0];
+		$post_thumbnail_id = get_post_thumbnail_id( $post_id );
+		if ( $post_thumbnail_id ) {
+			return (int) $post_thumbnail_id;
+		}
+	}
+
+	return null;
+}
