@@ -166,6 +166,8 @@ function smn_terms_shortcode($atts) {
 
     if ( is_tax() && $title == 'auto' ) {
         $title = sprintf( esc_html__( 'Tipos de %s', 'sorribes' ), '<mark class="has-inline-color has-primary-30-color">' . strtolower( $queried_object->name ) ) . '</mark>';
+    } elseif ( $title == 'auto' ) {
+        $title = '';
     }
 
     if ( $title ) {

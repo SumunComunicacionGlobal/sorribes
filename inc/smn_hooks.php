@@ -3,6 +3,7 @@
 // Agrega un filtro para el bloque de consulta de WordPress
 // que muestra los posts relacionados en la página de un post y los filtra por categorías
 function smn_filter_render_block_data($parsed_block) {
+
     if (
         is_single() &&
         isset($parsed_block['blockName']) &&
@@ -56,6 +57,33 @@ function smn_add_breadcrumbs_to_headings($block_content, $block) {
         }
         $breadcrumbs = ob_get_clean();
         return $block_content . $breadcrumbs;
+    }
+
+    return $block_content;
+}
+
+add_filter( 'render_block', 'smn_wrap_classic_block_in_columns', 10, 2 );
+function smn_wrap_classic_block_in_columns( $block_content, $block ) {
+    if ( !is_singular('solucion') || is_admin() || defined('REST_REQUEST') && REST_REQUEST) {
+        return $block_content;
+    }
+
+    if ( !$block['blockName'] && trim( $block['innerHTML'] ) != '' ) {
+
+        $r = '';
+
+        $r .= '<div class="wp-block-columns is-layout-flex smn-classic-columns">';
+            $r .= '<div class="wp-block-column">';
+                $r .= $block_content;
+            $r .= '</div>';
+            $r .= '<div class="wp-block-column">';
+                $r .= '<div class="wp-block-image smn-classic-image">';
+                    $r .= get_the_post_thumbnail( null, 'medium_large', ['class' => 'aligncenter'] );
+                $r .= '</div>';
+            $r .= '</div>';
+        $r .= '</div>';
+
+        return $r;
     }
 
     return $block_content;

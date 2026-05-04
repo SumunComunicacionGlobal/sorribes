@@ -126,6 +126,10 @@
 }
 
 .descargable-card {
+    background-image: url(./assets/img/decoracion-rombos-muted.svg);
+    background-repeat: no-repeat;
+    background-position: top 1rem left 5rem;
+    background-size: auto 50px;
     
     img {
         transition: .3s ease-in-out;
