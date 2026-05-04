@@ -39,7 +39,7 @@
             position: initial;
         }
 
-        .wp-block-cover__background {
+        .wp-block-cover__background.has-background-img {
             opacity: 1;
             background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.3) 50%, var(--wp--preset--color--neutral-100) 100%);
         }

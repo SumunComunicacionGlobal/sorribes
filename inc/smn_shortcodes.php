@@ -182,19 +182,17 @@ function smn_terms_shortcode($atts) {
         $term_link = get_term_link($term);
         // $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
         $thumb_id = smn_get_term_thumbnail_id($term);
-        $img_html = '';
-        if ($thumb_id) {
-            $img_url = wp_get_attachment_image_url($thumb_id, 'medium');
-            if ($img_url) {
-                $img_html = '<div class="smn-terms-img-wrap"><img src="' . esc_url($img_url) . '" alt="' . esc_attr($term->name) . '" class="smn-terms-img" /></div>';
-            }
-        }
+
         $output .= '<div class="wp-block-cover smn-terms-card">';
+
         if ($thumb_id) {
             // Extract image URL for background
             $output .= wp_get_attachment_image($thumb_id, 'medium_large', false, ['class' => 'wp-block-cover__image-background']);
+            $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-dim has-background-img"></span>';
+        } else {
+            $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-neutral-100 has-background-dim has-background-dim-90"></span>';
         }
-        $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>';
+
         $output .= '<div class="wp-block-cover__inner-container">';
         $output .= '<h3 class="smn-terms-title"><a href="' . esc_url($term_link) . '" class="stretched-link">' . esc_html($term->name) . '</a></h3>';
 
