@@ -41,7 +41,7 @@
 
         .wp-block-cover__background {
             opacity: 1;
-            background: linear-gradient(180deg, rgba(0,0,0,0) 50%, var(--wp--preset--color--neutral-100) 100%);
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.3) 50%, var(--wp--preset--color--neutral-100) 100%);
         }
 
         .wp-block-cover__image-background {
