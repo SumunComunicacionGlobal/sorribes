@@ -187,6 +187,11 @@
           "color": "#19282F"
         },
         {
+          "name": "Link",
+          "slug": "link",
+          "color": "var(--wp--preset--color--primary)"
+        },
+        {
           "name": "Feedback-Warning",
           "slug": "feedback-warning",
           "color": "#ffd11c"

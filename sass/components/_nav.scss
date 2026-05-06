@@ -44,3 +44,27 @@
     }
 
 }
+
+.lwptoc.lwptoc {
+    margin: 0;
+    width: 100vw;
+    padding: var(--wp--preset--spacing--10) 0;
+
+    .lwptoc_i {
+        padding: 0;
+        background: none;
+    }
+
+    .lwptoc_itemWrap {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: var(--wp--preset--spacing--05) var(--wp--preset--spacing--20);
+    }
+
+    &.lwptoc-light .lwptoc_i A {
+        color: var(--wp--preset--color--link);
+        font-weight: 500;
+    }
+}
