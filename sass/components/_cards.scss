@@ -126,17 +126,27 @@
 }
 
 .descargable-card {
-    background-image: url(./assets/img/decoracion-rombos-muted.svg);
+    background-color: var(--wp--preset--color--primary);
+    color: var(--wp--preset--color--neutral-30);
+    background-image: url(./assets/img/decoracion-rombos.svg);
     background-repeat: no-repeat;
-    background-position: top 1rem left 5rem;
+    background-position: top 1rem left 16rem;
     background-size: auto 50px;
     
     img {
+        filter: brightness(0) invert(1);
+        opacity: .8;
         transition: .3s ease-in-out;
     }
 
     &:hover img {
         transform: translateY(.25rem);
+    }
+
+    .file-size {
+        display: block;
+        font-size: var(--wp--preset--font-size--caption);
+        margin-top: var(--wp--preset--spacing--10);
     }
 }
 

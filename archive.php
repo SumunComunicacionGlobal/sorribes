@@ -8,14 +8,39 @@
  */
 
 get_header();
+
+$show_posts = true;
+$content_fragment = '';
+$subcategories = '';
+
+if ( is_tax( 'tipo' ) ) {
+	ob_start();
+	get_template_part( 'parts/content-fragment' );
+	$content_fragment = ob_get_clean();
+	if ( $content_fragment ) {
+		$show_posts = false;
+	}
+
+	ob_start();
+	get_template_part( 'parts/subcategories' );
+	$subcategories = ob_get_clean();
+}
+
 ?>
 
 	<main id="primary" class="site-main">
 
 		<div class="has-global-padding is-layout-constrained">
 
+			<?php
+			if ( $content_fragment ) {
+				echo $content_fragment;
+			} else {
+				echo $subcategories;
+			}
+			?>
 
-			<?php if ( have_posts() ) : ?>
+			<?php if ( $show_posts && have_posts() ) : ?>
 
 				<?php if ( is_tax( 'tipo') ) {
 					$queried_object = get_queried_object();
@@ -45,26 +70,11 @@ get_header();
 
 				<?php the_posts_navigation();
 
-			else :
-
-				get_template_part( 'template-parts/content', 'none' );
-
 			endif;
 			?>
 
 			<?php
-			ob_start();
-			get_template_part( 'parts/content-fragment' );
-			$content_fragment = ob_get_clean();
-			if ( $content_fragment ) {
-				echo $content_fragment;
-			} else {
-				get_template_part( 'parts/subcategories' );
-			}
-			?>
-
-			<?php
-			if ( !$content_fragment ) {
+			if ( is_tax('tipo') && !$content_fragment && !$subcategories ) {
 				block_template_part( 'area-pedir-presupuesto' );
 			} ?>
 

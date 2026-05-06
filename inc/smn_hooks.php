@@ -245,3 +245,13 @@ add_action('wp_footer', function() {
     </script>
     <?php
 });
+
+add_action('pre_get_posts', function($query) {
+    if (
+        !is_admin() &&
+        $query->is_main_query() &&
+        is_tax('tipo')
+    ) {
+        $query->set('posts_per_page', -1);
+    }
+});

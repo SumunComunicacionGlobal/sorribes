@@ -26,7 +26,7 @@
     "uglify-js": "^3.19.0"
   },
   "scripts": {
-    "watch": "sass --watch sass:./ --no-source-map --style compressed",
+    "watch": "sass --watch sass:./ --style compressed",
     "compile:css": "sass sass:./ && stylelint '*.css' --fix || true && stylelint '*.css' --fix",
     "compile:js": "uglifyjs assets/js/*.js > assets/js/sorribes.min.js",
     "bundle": "dir-archiver --src . --dest ../sorribes.zip --exclude .DS_Store .stylelintrc.json .eslintrc .git .gitattributes .github .gitignore README.md composer.json composer.lock node_modules vendor package-lock.json package.json .travis.yml phpcs.xml.dist sass style.css.map yarn.lock",

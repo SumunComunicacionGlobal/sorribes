@@ -79,6 +79,26 @@ if ( $thumb_id ) {
 if ( ! $thumb_id || $thumb_width < 760 ) {
     $thumb_id = THUMBNAIL_ID;
 }
+
+if ( $description ) {
+    if ( preg_match( '/-{3,}/', $description ) ) {
+        // Split description into two parts: before and after the separator
+        list( $desc_before, $desc_after ) = preg_split( '/-{3,}/', $description, 2 );
+        // Clean up and split lines after the separator
+        $desc_after = trim( strip_tags( $desc_after ) );
+        $lines = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', $desc_after ) ) );
+        if ( $lines ) {
+            $description = $desc_before;
+            $description .= '<ul class="is-style-check-list">';
+            foreach ( $lines as $line ) {
+                if ( $line !== '' ) {
+                    $description .= '<li>' . esc_html( $line ) . '</li>';
+                }
+            }
+            $description .= '</ul>';
+        }
+    }
+}
 ?>
 
 <div id="hero" class="wp-block-cover alignfull bisel-abajo-derecha">

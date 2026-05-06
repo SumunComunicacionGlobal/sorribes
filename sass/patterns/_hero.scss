@@ -15,6 +15,10 @@
 
     .page-description {
         margin-bottom: var(--wp--preset--spacing--30);
+
+        .is-style-check-list {
+            font-weight: 500;
+        }
     }
 
     .wp-block-cover__image-background {

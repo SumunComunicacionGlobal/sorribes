@@ -296,3 +296,10 @@ function smn_menu_featured_shortcode() {
     return $menu;
 }
 add_shortcode('menu_featured', 'smn_menu_featured_shortcode');
+
+function smn_menu_anclas_shortcode() {
+    $output = '';
+    $output .= do_shortcode('[lwptoc]');
+    return $output;
+}
+add_shortcode('menu_anclas', 'smn_menu_anclas_shortcode');
