@@ -19,13 +19,14 @@ if ( is_tax( 'tipo' ) ) {
 	$content_fragment = ob_get_clean();
 	if ( $content_fragment ) {
 		$show_posts = false;
+	} else {
+		ob_start();
+		get_template_part( 'parts/subcategories' );
+		$subcategories = ob_get_clean();
 	}
 
-	ob_start();
-	get_template_part( 'parts/subcategories' );
-	$subcategories = ob_get_clean();
 }
-
+	
 ?>
 
 	<main id="primary" class="site-main">

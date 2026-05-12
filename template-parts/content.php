@@ -32,11 +32,7 @@ if ( 'solucion' === $post_type ) {
 		<?php elseif( 'solucion' == $post_type ) : ?>
 
 			<div class="entry-meta">
-				<span class="is-style-pill">
-					<?php
-					_e( 'Ver ficha técnica', 'sorribes' );
-					?>
-				</span>
+				<span class="is-style-pill"><?php _e( 'Ver ficha técnica', 'sorribes' ); ?></span>
 			</div><!-- .entry-meta -->
 
 		<?php endif; ?>

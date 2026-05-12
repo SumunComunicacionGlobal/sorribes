@@ -158,53 +158,89 @@ function smn_terms_shortcode($atts) {
         'hide_empty' => false,
         'parent' => $parent,
     ]);
-    if (empty($terms) || is_wp_error($terms)) {
-        return '';
-    }
+    if ( !empty($terms) && !is_wp_error($terms)) {
 
-    $output = '';
+        $output = '';
 
-    if ( is_tax() && $title == 'auto' ) {
-        $title = sprintf( esc_html__( 'Tipos de %s', 'sorribes' ), '<mark class="has-inline-color has-primary-30-color">' . strtolower( $queried_object->name ) ) . '</mark>';
-    } elseif ( $title == 'auto' ) {
-        $title = '';
-    }
-
-    if ( $title ) {
-        $output .= '<div class="wp-block-group">';
-            $output .= '<h2 class="terms-shortcode-header">' . $title . '</h2>';
-        $output .= '</div>';
-    }
-
-
-    $output .= '<div class="is-layout-grid smn-default-grid smn-terms-grid">';
-    foreach ($terms as $term) {
-        $term_link = get_term_link($term);
-        // $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
-        $thumb_id = smn_get_term_thumbnail_id($term);
-
-        $output .= '<div class="wp-block-cover smn-terms-card">';
-
-        if ($thumb_id) {
-            // Extract image URL for background
-            $output .= wp_get_attachment_image($thumb_id, 'medium_large', false, ['class' => 'wp-block-cover__image-background']);
-            $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-dim has-background-img"></span>';
-        } else {
-            $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-neutral-100 has-background-dim has-background-dim-90"></span>';
+        if ( is_tax() && $title == 'auto' ) {
+            $title = sprintf( esc_html__( 'Tipos de %s', 'sorribes' ), '<mark class="has-inline-color has-primary-30-color">' . strtolower( $queried_object->name ) ) . '</mark>';
+        } elseif ( $title == 'auto' ) {
+            $title = '';
         }
 
-        $output .= '<div class="wp-block-cover__inner-container">';
-        $output .= '<h3 class="smn-terms-title"><a href="' . esc_url($term_link) . '" class="stretched-link">' . esc_html($term->name) . '</a></h3>';
-
-        $description = get_field('term_description_pt_archive', $taxonomy . '_' . $term->term_id);
-        if ( $description ) {
-            $output .= '<div class="smn-terms-description has-small-font-size">' . wp_kses_post(wpautop($description)) . '</div>';
+        if ( $title ) {
+            $output .= '<div class="wp-block-group">';
+                $output .= '<h2 class="terms-shortcode-header">' . $title . '</h2>';
+            $output .= '</div>';
         }
 
+
+        $output .= '<div class="is-layout-grid smn-default-grid smn-terms-grid">';
+        foreach ($terms as $term) {
+            $term_link = get_term_link($term);
+            // $thumb_id = get_term_meta($term->term_id, 'thumbnail_id', true);
+            $thumb_id = smn_get_term_thumbnail_id($term);
+
+            $output .= '<div class="wp-block-cover smn-terms-card">';
+
+            if ($thumb_id) {
+                // Extract image URL for background
+                $output .= wp_get_attachment_image($thumb_id, 'medium_large', false, ['class' => 'wp-block-cover__image-background']);
+                $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-dim has-background-img"></span>';
+            } else {
+                $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-neutral-100 has-background-dim has-background-dim-90"></span>';
+            }
+
+            $output .= '<div class="wp-block-cover__inner-container">';
+            $output .= '<h3 class="smn-terms-title"><a href="' . esc_url($term_link) . '" class="stretched-link">' . esc_html($term->name) . '</a></h3>';
+
+            $description = get_field('term_description_pt_archive', $taxonomy . '_' . $term->term_id);
+            if ( $description ) {
+                $output .= '<div class="smn-terms-description has-small-font-size">' . wp_kses_post(wpautop($description)) . '</div>';
+            }
+
+            $output .= '</div>';
+            $output .= '</div>';
+        }
         $output .= '</div>';
-        $output .= '</div>';
+
+    } else {
+        remove_filter( 'the_content', 'wpautop' );
+        // show products in current term
+        $products = new WP_Query([
+            'post_type' => 'solucion',
+            'tax_query' => [
+                [
+                    'taxonomy' => $taxonomy,
+                    'field' => 'term_id',
+                    'terms' => $parent,
+                ],
+            ],
+        ]);
+
+        if ( $products->have_posts() ) {
+
+            $output = '<div class="is-layout-grid smn-default-grid smn-archive-posts-grid">';
+            while ( $products->have_posts() ) {
+                $products->the_post();
+                // $output .= '<div class="card">';
+                //     $output .= '<h3 class="has-heading-4-font-size"><a href="' . esc_url( get_permalink() ) . '" class="stretched-link">' . get_the_title() . '</a></h3>';
+                // $output .= '</div>';
+                ob_start();
+                get_template_part( 'template-parts/content', get_post_type() );
+                $output .= ob_get_clean();
+                $output = str_replace(array('<p>', '</p>'), '', $output);
+                $output = str_replace(array('<br>', '<br/>', '<br />'), '', $output);
+
+
+            }
+            wp_reset_postdata();
+            $output .= '</div>';
+        }
+
+        add_filter( 'the_content', 'wpautop' );
+
     }
-    $output .= '</div>';
 
     if ( is_tax() ) {
         ob_start();
@@ -212,9 +248,26 @@ function smn_terms_shortcode($atts) {
         $output .= ob_get_clean();
     }
 
-    return $output;
+    $output = clean_shortcode_text($output);
+    return do_shortcode($output);
 }
 add_shortcode('terms', 'smn_terms_shortcode');
+
+function clean_shortcode_text($text = '') {
+    // Replace all empty paragraph tags that WordPress adds
+    $tags = array("<p>", "</p>");
+    $text = str_replace($tags, "\n", $text);
+
+    // Remove any extra line breaks tags
+    $tags = array("<br>", "<br/>", "<br />");
+    $text = str_replace($tags, "", $text);
+
+    // Remove HTML comments that will create empty paragraphs with the HTML comment inside
+    $text = preg_replace('/<!--(.|\s)*?-->/', '', $text);
+
+    // Add back in the paragraph (<p>) and line break (<br>) tags again, remove empty ones
+    return apply_filters('the_content', $text);
+}
 
 /**
  * Shortcode: [tipo_menu]
