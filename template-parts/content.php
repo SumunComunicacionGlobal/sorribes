@@ -7,6 +7,8 @@
  * @package _sumun
  */
 
+global $post;
+
 $post_type = get_post_type();
 $post_class = '';
 if ( !is_singular() ) {
@@ -39,6 +41,10 @@ if ( 'solucion' === $post_type ) {
 
 		<?php if ( !is_singular() ) :
 			the_title( '<' . $title_tag . ' class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></' . $title_tag . '>' );
+			$excerpt = $post->post_excerpt;
+			if ( $excerpt ) :
+				echo '<div class="entry-summary">' . wpautop( $excerpt ) . '</div>';
+			endif;
 		endif; ?>
 
 
