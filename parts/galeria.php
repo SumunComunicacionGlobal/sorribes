@@ -70,15 +70,11 @@ if ( is_singular() ) {
 
     }
 
+
     $gallery_ids = array_unique($gallery_ids);
     shuffle($gallery_ids);
     $gallery_ids = array_slice($gallery_ids, 0, 12);
-
-
-    // Optionally, filter $gallery_images to only include those in $gallery_ids
-    $gallery_images = array_filter($gallery_images, function($img) use ($gallery_ids) {
-        return in_array($img['id'], $gallery_ids);
-    });
+    $gallery_images = array_unique($gallery_images, SORT_REGULAR);
 
 }
 
@@ -86,14 +82,18 @@ if ( !$gallery_ids ) return false;
 
 $count = count($gallery_ids);
 
-if ( $count == 1 ) {
-    $post_thumbnail_id = get_post_thumbnail_id();
-    if ( $post_thumbnail_id && ! is_wp_error( $post_thumbnail_id ) ) {
-        if ( in_array( $post_thumbnail_id, $gallery_ids ) ) {
-            // Remove thumbnail ID from gallery IDs to avoid duplication
-            $gallery_ids = array_diff( $gallery_ids, [ $post_thumbnail_id ] );
+if ( is_singular() && has_post_thumbnail() ) {
+
+    if ( $count == 1 ) {
+        $post_thumbnail_id = get_post_thumbnail_id();
+        if ( $post_thumbnail_id && ! is_wp_error( $post_thumbnail_id ) ) {
+            if ( in_array( $post_thumbnail_id, $gallery_ids ) ) {
+                // Remove thumbnail ID from gallery IDs to avoid duplication
+                $gallery_ids = array_diff( $gallery_ids, [ $post_thumbnail_id ] );
+            }
         }
     }
+
 }
 
 if (is_array($gallery_ids) && !empty($gallery_ids)) {
