@@ -5,7 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if (have_rows('files')) {
     echo '<section class="descargables-section wrapper" id="descargas">';
-        echo '<h2>Documentación y descargas</h2>';
+        echo '<div class="wp-block-group is-layout-flex mb-2">';
+            echo '<figure class="wp-block-image">';
+                echo '<img src="' . esc_url(get_stylesheet_directory_uri() . '/assets/icons/icono-documentacion.svg') . '" alt="' . __( 'Icono documentación', 'sorribes' ) . '" width="64" height="80" />';
+            echo '</figure>';
+            echo '<h2>Documentación y descargas</h2>';
+        echo '</div>';
         echo '<div class="is-layout-grid smn-default-grid smn-descargables-grid">';
         while (have_rows('files')) {
             the_row();
