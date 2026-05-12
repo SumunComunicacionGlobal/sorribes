@@ -31,12 +31,12 @@ if ( is_singular() ) {
                 'terms'    => get_queried_object_id(),
             ],
         ],
-        'meta_query' => [
-            [
-                'key' => 'product_image_gallery',
-                'compare' => 'EXISTS',
-            ],
-        ],
+        // 'meta_query' => [
+        //     [
+        //         'key' => 'product_image_gallery',
+        //         'compare' => 'EXISTS',
+        //     ],
+        // ],
         'fields' => 'all',
     ];
 
@@ -45,6 +45,17 @@ if ( is_singular() ) {
     $gallery_images = [];
 
     foreach ($posts as $post) {
+
+        // Add featured image to gallery if it exists
+        $post_thumbnail_id = get_post_thumbnail_id($post->ID);
+        if ( $post_thumbnail_id && ! is_wp_error( $post_thumbnail_id ) ) {
+            $gallery_ids[] = $post_thumbnail_id;
+            $gallery_images[] = [
+                'title' => get_the_title($post->ID),
+                'id' => $post_thumbnail_id
+            ];
+        }
+
         $ids = get_field('product_image_gallery', $post->ID );
 
         if (is_array($ids)) {
