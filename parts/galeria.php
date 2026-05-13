@@ -75,6 +75,9 @@ if ( is_singular() ) {
     shuffle($gallery_ids);
     $gallery_ids = array_slice($gallery_ids, 0, 12);
     $gallery_images = array_unique($gallery_images, SORT_REGULAR);
+    $gallery_images = array_filter($gallery_images, function($img) use ($gallery_ids) {
+        return in_array($img['id'], $gallery_ids);
+    });
 
 }
 
