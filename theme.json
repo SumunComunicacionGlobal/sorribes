@@ -187,11 +187,6 @@
           "color": "#19282F"
         },
         {
-          "name": "Link",
-          "slug": "link",
-          "color": "var(--wp--preset--color--primary)"
-        },
-        {
           "name": "Feedback-Warning",
           "slug": "feedback-warning",
           "color": "#ffd11c"
@@ -563,7 +558,7 @@
 			},
 			"link": {
 				"color": {
-					"text": "var(--wp--custom--color--link)"
+					"text": "var(--wp--custom--color--primary)"
 				},
 				"typography": {
 					"fontFamily": "var(--wp--preset--font-family--font-main)"
