@@ -104,3 +104,32 @@ function smn_hybrid_setup() {
 }
 
 add_action( 'after_setup_theme', 'smn_hybrid_setup' );
+
+/**
+ * Disable author archives and prevent author URLs.
+ */
+function smn_disable_author_archives() {
+	if ( is_author() || get_query_var( 'author_name' ) || get_query_var( 'author' ) ) {
+		wp_safe_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'smn_disable_author_archives' );
+
+/**
+ * Remove author rewrite rules so /author/* doesn't get generated as valid route.
+ *
+ * @param array $rules Rewrite rules.
+ * @return array
+ */
+function smn_remove_author_rewrite_rules( $rules ) {
+	foreach ( $rules as $rule => $rewrite ) {
+		if ( 0 === strpos( $rule, 'author/' ) ) {
+			unset( $rules[ $rule ] );
+		}
+	}
+
+	return $rules;
+}
+add_filter( 'rewrite_rules_array', 'smn_remove_author_rewrite_rules' );
+
