@@ -255,3 +255,165 @@ add_action('pre_get_posts', function($query) {
         $query->set('posts_per_page', -1);
     }
 });
+
+add_filter( 'wp_get_attachment_url', 'sumun_version_pdf_xlsx_attachment_url', 10, 2 );
+function sumun_version_pdf_xlsx_attachment_url( $url, $attachment_id ) {
+
+    $file_path = get_attached_file( $attachment_id );
+    if ( ! $file_path || ! file_exists( $file_path ) ) {
+        return $url;
+    }
+
+    $extension = strtolower( pathinfo( $file_path, PATHINFO_EXTENSION ) );
+    $allowed_extensions = array( 'pdf', 'xlsx' );
+
+    if ( ! in_array( $extension, $allowed_extensions, true ) ) {
+        return $url;
+    }
+
+    $version = filemtime( $file_path );
+
+    if ( ! $version ) {
+        return $url;
+    }
+
+    return add_query_arg( 'ver', $version, $url );
+}
+
+/**
+ * Reemplazar PDFs y XLSX manteniendo el mismo attachment en WordPress
+ */
+
+// add_filter( 'wp_handle_upload_prefilter', 'sumun_prepare_file_replacement' );
+// add_action( 'add_attachment', 'sumun_finish_file_replacement' );
+
+/**
+ * Almacén temporal para saber qué archivo se está reemplazando.
+ */
+$GLOBALS['sumun_file_replacements'] = array();
+
+/**
+ * Paso 1:
+ * Antes de subir el archivo, comprobamos si ya existe un attachment
+ * con el mismo nombre exacto (solo PDF y XLSX).
+ * Si existe, borramos el archivo físico antiguo para que WordPress no añada -1, -2, etc.
+ * Pero NO borramos el attachment.
+ */
+function sumun_prepare_file_replacement( $file ) {
+
+    $allowed_extensions = array( 'pdf', 'xlsx' );
+
+    $pathinfo  = pathinfo( $file['name'] );
+    $extension = isset( $pathinfo['extension'] ) ? strtolower( $pathinfo['extension'] ) : '';
+    $basename  = isset( $pathinfo['basename'] ) ? $pathinfo['basename'] : '';
+
+    if ( ! in_array( $extension, $allowed_extensions, true ) ) {
+        return $file;
+    }
+
+    $attachments = get_posts( array(
+        'post_type'      => 'attachment',
+        'post_status'    => 'inherit',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+        'meta_query'     => array(
+            array(
+                'key'     => '_wp_attached_file',
+                'value'   => $basename,
+                'compare' => 'LIKE',
+            ),
+        ),
+    ) );
+
+    foreach ( $attachments as $attachment_id ) {
+        $attached_file = get_post_meta( $attachment_id, '_wp_attached_file', true );
+
+        if ( $attached_file && basename( $attached_file ) === $basename ) {
+
+            $absolute_path = get_attached_file( $attachment_id );
+
+            // Guardamos la información para usarla al crear el nuevo attachment temporal
+            $GLOBALS['sumun_file_replacements'][ $basename ] = array(
+                'old_attachment_id' => $attachment_id,
+                'old_relative_path' => $attached_file,
+                'old_absolute_path' => $absolute_path,
+            );
+
+            // Borramos solo el archivo físico, NO el attachment
+            if ( $absolute_path && file_exists( $absolute_path ) ) {
+                @unlink( $absolute_path );
+            }
+
+            break;
+        }
+    }
+
+    return $file;
+}
+
+/**
+ * Paso 2:
+ * WordPress crea un attachment nuevo al subir el archivo.
+ * Si en realidad era una sustitución:
+ * - actualizamos el attachment antiguo
+ * - regeneramos metadatos si procede
+ * - eliminamos SOLO el post del attachment nuevo
+ * - mantenemos el archivo recién subido
+ */
+function sumun_finish_file_replacement( $new_attachment_id ) {
+
+    $new_file = get_attached_file( $new_attachment_id );
+
+    if ( ! $new_file ) {
+        return;
+    }
+
+    $basename = basename( $new_file );
+
+    if ( empty( $GLOBALS['sumun_file_replacements'][ $basename ] ) ) {
+        return;
+    }
+
+    $replacement = $GLOBALS['sumun_file_replacements'][ $basename ];
+    $old_attachment_id = (int) $replacement['old_attachment_id'];
+
+    if ( ! $old_attachment_id || $old_attachment_id === $new_attachment_id ) {
+        unset( $GLOBALS['sumun_file_replacements'][ $basename ] );
+        return;
+    }
+
+    $upload_dir = wp_get_upload_dir();
+
+    // Ruta relativa del archivo nuevo dentro de uploads
+    $relative_path = str_replace(
+        trailingslashit( $upload_dir['basedir'] ),
+        '',
+        $new_file
+    );
+
+    // Mime type real del archivo nuevo
+    $filetype = wp_check_filetype( $new_file );
+
+    // Actualizamos el attachment antiguo para que apunte al archivo nuevo
+    update_attached_file( $old_attachment_id, $new_file );
+    update_post_meta( $old_attachment_id, '_wp_attached_file', $relative_path );
+
+    wp_update_post( array(
+        'ID'             => $old_attachment_id,
+        'post_mime_type' => $filetype['type'],
+        'post_modified'  => current_time( 'mysql' ),
+        'post_modified_gmt' => current_time( 'mysql', 1 ),
+    ) );
+
+    // Regenerar metadatos (útil especialmente para PDFs)
+    $metadata = wp_generate_attachment_metadata( $old_attachment_id, $new_file );
+    if ( ! is_wp_error( $metadata ) && ! empty( $metadata ) ) {
+        wp_update_attachment_metadata( $old_attachment_id, $metadata );
+    }
+
+    // Eliminar SOLO el post del nuevo attachment, sin borrar el archivo
+    wp_delete_post( $new_attachment_id, true );
+
+    // Limpiar la memoria temporal
+    unset( $GLOBALS['sumun_file_replacements'][ $basename ] );
+}
