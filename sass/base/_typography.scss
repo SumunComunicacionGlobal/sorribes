@@ -1,3 +1,5 @@
+@use '../abstracts/mixins' as *;
+
 p,
 :root :where(.is-layout-constrained) p {
     margin-block-start: 1em;
@@ -81,4 +83,27 @@ mark {
 
 #sfm-sidebar .sfm-menu li a, #sfm-sidebar .sfm-chapter, #sfm-sidebar .sfm-back-parent {
     text-transform: none !important;
+}
+
+@media ( $above-desktop ) {
+    
+    .has-display-font-size {
+        font-size: 5rem;
+    }
+
+    h1,
+    .has-heading-1-font-size {
+        font-size: 4rem;
+    }
+
+    h2,
+    .has-heading-2-font-size {
+        font-size: 3rem;
+    }
+
+    h3,
+    .has-heading-3-font-size {
+        font-size: 2rem;
+    }
+    
 }
