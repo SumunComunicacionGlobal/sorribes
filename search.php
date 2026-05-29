@@ -31,7 +31,12 @@ get_header();
 					// get_template_part( 'template-parts/content', 'search' );
 					?>
 
-					<li class="has-heading-4-font-size"><a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></li>
+					<li class="has-heading-4-font-size">
+						<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+							<?php the_title(); ?>
+						</a>
+						<?php edit_post_link( ' - ' . __( 'Edit', '_sumun' ), '<span class="edit-link">', '</span>' ); ?>
+					</li>
 
 					<?php
 
