@@ -97,3 +97,41 @@
 		}
 	}
 }() );
+
+( function() {
+	const anchorNav = document.querySelector( '.anchor-nav' );
+
+	if ( ! anchorNav ) {
+		return;
+	}
+
+	const body = document.body;
+	const fixedClass = 'anchor-nav-fixed';
+	const stickyOffset = 95;
+	const bottomThreshold = 600;
+
+	function isNearBottom() {
+		const scrollPosition = window.scrollY + window.innerHeight;
+		const documentHeight = document.documentElement.scrollHeight;
+
+		return documentHeight - scrollPosition <= bottomThreshold;
+	}
+
+	function updateAnchorNavState() {
+		if ( isNearBottom() ) {
+			body.classList.remove( fixedClass );
+			return;
+		}
+
+		if ( anchorNav.getBoundingClientRect().top <= stickyOffset ) {
+			body.classList.add( fixedClass );
+		} else {
+			body.classList.remove( fixedClass );
+		}
+	}
+
+	window.addEventListener( 'scroll', updateAnchorNavState, { passive: true } );
+	window.addEventListener( 'resize', updateAnchorNavState );
+	updateAnchorNavState();
+}() );
+

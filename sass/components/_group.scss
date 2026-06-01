@@ -74,7 +74,11 @@
 }
 
 .wp-block-group.is-position-sticky {
-    top: 120px;
+    top: 99px;
+
+    &.has-white-background-color {
+        background-color: var(--wp--preset--color--neutral-white) !important;
+    }
 }
 
 .wp-block-group.is-style-margin-vertical {
