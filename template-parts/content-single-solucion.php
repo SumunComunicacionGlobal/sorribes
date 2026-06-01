@@ -25,8 +25,6 @@ the_content(
 	)
 );
 
-echo '<div class="wp-block-spacer" style="height:var(--wp--preset--spacing--40)" aria-hidden="true"></div>';
-
 get_template_part( 'parts/galeria' );
 
 get_template_part( 'parts/descargables' );
