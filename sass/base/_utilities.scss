@@ -87,3 +87,8 @@ a.stretched-link, .stretched-link > a {
 .bisel-abajo-izquierda {
     clip-path: polygon(0 0, 100% 0, 100% 100%, var(--smn-cover-bevel-size) 100%, 0 calc(100% - var(--smn-cover-bevel-size)));
 }
+
+p:empty {
+    display: none;
+}
+
