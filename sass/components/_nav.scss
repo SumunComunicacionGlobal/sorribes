@@ -51,20 +51,30 @@
     padding: var(--wp--preset--spacing--10) 0;
 
     .lwptoc_i {
-        padding: 0;
+        padding-top: 0;
+        padding-left: 0;
+        padding-right: 0;
         background: none;
     }
 
-    .lwptoc_itemWrap {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        gap: var(--wp--preset--spacing--05) var(--wp--preset--spacing--20);
-    }
+    // .lwptoc_itemWrap {
+    //     display: flex;
+    //     flex-wrap: wrap;
+    //     align-items: center;
+    //     justify-content: center;
+    //     gap: var(--wp--preset--spacing--05) var(--wp--preset--spacing--05);
+    // }
 
     &.lwptoc-light .lwptoc_i A {
         color: var(--wp--preset--color--link);
         font-weight: 500;
+        padding: 2px var(--wp--preset--spacing--05);
+        border-radius: 4px;
     }
+
+    .lwptoc_item.is-active a {
+        background-color: var(--wp--preset--color--primary-10);
+        color: var(--wp--preset--color--neutral-white);
+    }
+
 }
