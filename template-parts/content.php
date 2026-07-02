@@ -78,6 +78,10 @@ if ( 'solucion' === $post_type ) {
 			?>
 		</div><!-- .entry-content -->
 
+	<?php else : ?>
+
+		<?php smn_hybrid_post_thumbnail(); ?>
+
 	<?php endif; ?>
 
 	<?php get_template_part( 'parts/galeria' ); ?>
