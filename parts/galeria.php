@@ -12,8 +12,12 @@ if ( is_singular() ) {
     $gallery_ids = get_field('product_image_gallery');
     if ( $gallery_ids ) {
         foreach ($gallery_ids as $id) {
+            $image_caption = wp_get_attachment_caption($id);
+            if ( ! $image_caption ) {
+                $image_caption = get_the_title();
+            }
             $gallery_images[] = [
-                'title' => get_the_title(),
+                'title' => $image_caption,
                 'id' => $id
             ];
         }
@@ -52,9 +56,13 @@ if ( is_singular() ) {
 
     if ( is_array( $term_gallery_ids ) ) {
         foreach ( $term_gallery_ids as $id ) {
+            $title = wp_get_attachment_caption( $id );
+            if ( ! $title ) {
+                $title = single_term_title( '', false );
+            }
             $gallery_ids[] = $id;
             $gallery_images[] = [
-                'title' => single_term_title( '', false ),
+                'title' => $title,
                 'id' => $id,
             ];
         }
