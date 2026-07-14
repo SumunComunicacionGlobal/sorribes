@@ -19,6 +19,12 @@ if ( is_singular() ) {
         }
     }
 } elseif ( is_tax( 'tipo' ) ) {
+    $current_term = get_queried_object();
+    $term_gallery_ids = [];
+
+    if ( $current_term && isset( $current_term->taxonomy, $current_term->term_id ) ) {
+        $term_gallery_ids = get_field( 'product_image_gallery', $current_term->taxonomy . '_' . $current_term->term_id );
+    }
     
     $args = [
         'post_type' => 'solucion',
@@ -43,6 +49,16 @@ if ( is_singular() ) {
     $posts = get_posts($args);
     $gallery_ids = [];
     $gallery_images = [];
+
+    if ( is_array( $term_gallery_ids ) ) {
+        foreach ( $term_gallery_ids as $id ) {
+            $gallery_ids[] = $id;
+            $gallery_images[] = [
+                'title' => single_term_title( '', false ),
+                'id' => $id,
+            ];
+        }
+    }
 
     foreach ($posts as $post) {
 
