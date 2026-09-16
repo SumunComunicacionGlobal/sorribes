@@ -84,9 +84,4 @@ if ( 'solucion' === $post_type ) {
 
 	<?php endif; ?>
 
-	<?php get_template_part( 'parts/galeria' ); ?>
-
-	<?php get_template_part( 'parts/descargables' ); ?>
-
-
 </article><!-- #post-<?php the_ID(); ?> -->
