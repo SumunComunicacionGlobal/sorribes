@@ -46,7 +46,7 @@ function smn_soluciones_shortcode() {
     $terms = get_terms([
         'taxonomy' => 'tipo',
         'parent' => 0,
-        'hide_empty' => false,
+        'hide_empty' => true,
     ]);
     if (empty($terms) || is_wp_error($terms)) {
         return '';
@@ -99,7 +99,7 @@ function smn_soluciones_shortcode() {
         $children = get_terms([
             'taxonomy' => 'tipo',
             'parent' => $term->term_id,
-            'hide_empty' => false,
+            'hide_empty' => true,
         ]);
         $children_html = '';
         if (!empty($children) && !is_wp_error($children)) {
@@ -155,7 +155,7 @@ function smn_terms_shortcode($atts) {
 
     $terms = get_terms([
         'taxonomy' => $taxonomy,
-        'hide_empty' => false,
+        'hide_empty' => true,
         'parent' => $parent,
     ]);
     if ( !empty($terms) && !is_wp_error($terms)) {
@@ -277,7 +277,7 @@ function smn_tipo_menu_shortcode() {
     $terms = get_terms([
         'taxonomy' => 'tipo',
         'parent' => 0,
-        'hide_empty' => false,
+        'hide_empty' => true,
         'orderby' => 'name',
         'order' => 'ASC',
     ]);
@@ -290,7 +290,7 @@ function smn_tipo_menu_shortcode() {
         $children = get_terms([
             'taxonomy' => 'tipo',
             'parent' => $parent_id,
-            'hide_empty' => false,
+            'hide_empty' => true,
             'orderby' => 'name',
             'order' => 'ASC',
         ]);

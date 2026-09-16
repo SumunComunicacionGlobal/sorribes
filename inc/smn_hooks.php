@@ -162,12 +162,12 @@ function cmplz_show_banner_on_click() {
 }
 add_action( 'wp_footer', 'cmplz_show_banner_on_click' );
 
-add_filter('get_terms_args', function($args, $taxonomies) {
-    if (in_array('tipo', (array) $taxonomies)) {
-        $args['hide_empty'] = false;
-    }
-    return $args;
-}, 10, 2);
+// add_filter('get_terms_args', function($args, $taxonomies) {
+//     if (in_array('tipo', (array) $taxonomies)) {
+//         $args['hide_empty'] = false;
+//     }
+//     return $args;
+// }, 10, 2);
 
 // Añade hasta 3 niveles de la taxonomía 'tipo' como submenús anidados al menú Superfly, sin mostrar productos en el último nivel
 add_filter('wp_nav_menu_objects', function($items, $args) {
@@ -184,7 +184,7 @@ add_filter('wp_nav_menu_objects', function($items, $args) {
                     $terms = get_terms([
                         'taxonomy' => 'tipo',
                         'parent' => $parent_id,
-                        'hide_empty' => false,
+                        'hide_empty' => true,
                     ]);
                     if (!empty($terms)) {
                         foreach ($terms as $term) {
