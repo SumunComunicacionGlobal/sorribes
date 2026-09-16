@@ -21,6 +21,15 @@ if ( is_singular() ) {
                 'id' => $id
             ];
         }
+    } elseif( has_post_thumbnail() ) {
+        $post_thumbnail_id = get_post_thumbnail_id();
+        if ( $post_thumbnail_id && ! is_wp_error( $post_thumbnail_id ) ) {
+            $gallery_ids[] = $post_thumbnail_id;
+            $gallery_images[] = [
+                'title' => get_the_title(),
+                'id' => $post_thumbnail_id
+            ];
+        }
     }
 } elseif ( is_tax( 'tipo' ) ) {
     $current_term = get_queried_object();
