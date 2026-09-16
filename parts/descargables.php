@@ -18,10 +18,8 @@ if (have_rows('files')) {
             if ($file_id) {
                 $url = wp_get_attachment_url($file_id);
                 $title = get_the_title($file_id) ? get_the_title($file_id) : basename($url);
-                if (stripos($title, '.pdf') !== false) {
-                    // Title contains .pdf
-                    // You can add your custom logic here if needed
-                    $title = str_replace(
+
+                $title = str_replace(
                     [
                         '.pdf',
                         '-',
@@ -38,9 +36,8 @@ if (have_rows('files')) {
                     ],
                     $title);
 
-                    $title = mb_convert_case($title, MB_CASE_TITLE_SIMPLE, "UTF-8");
-                }
-                
+                $title = mb_convert_case($title, MB_CASE_TITLE_SIMPLE, "UTF-8");
+                    
                 $description = get_post_field('post_content', $file_id);
 
                 // Get file size
