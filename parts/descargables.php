@@ -25,10 +25,16 @@ if (have_rows('files')) {
                     [
                         '.pdf',
                         '-',
+                        '_',
+                        'FichaTecnica',
+                        'FichaTécnica',
                     ],
                     [ 
                         '',
                         ' ',
+                        ' ',
+                        'Ficha Técnica',
+                        'Ficha Técnica',
                     ],
                     $title);
 
