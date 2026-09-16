@@ -119,17 +119,17 @@ if ( !$gallery_ids ) return false;
 $count = count($gallery_ids);
 
 if ( is_singular() && has_post_thumbnail() ) {
-
-    if ( $count == 1 ) {
-        $post_thumbnail_id = get_post_thumbnail_id();
-        if ( $post_thumbnail_id && ! is_wp_error( $post_thumbnail_id ) ) {
-            if ( in_array( $post_thumbnail_id, $gallery_ids ) ) {
-                // Remove thumbnail ID from gallery IDs to avoid duplication
-                $gallery_ids = array_diff( $gallery_ids, [ $post_thumbnail_id ] );
-            }
+    $post_thumbnail_id = get_post_thumbnail_id();
+    if ( $post_thumbnail_id && ! is_wp_error( $post_thumbnail_id ) ) {
+        // Only remove the featured image when there are multiple gallery items.
+        // If the gallery is empty and the featured image is the only image,
+        // we must keep it visible as the fallback image.
+        if ( count( $gallery_ids ) > 1 && in_array( $post_thumbnail_id, $gallery_ids, true ) ) {
+            $gallery_ids = array_diff( $gallery_ids, [ $post_thumbnail_id ] );
         }
     }
 
+    $count = count( $gallery_ids );
 }
 
 if (is_array($gallery_ids) && !empty($gallery_ids)) {
