@@ -13,6 +13,8 @@ $title_class = '';
 $thumb_width = 0;
 $side_image = true;
 $formulario_hero = false;
+$side_image_id = false;
+$bg_id = false;
 
 
 if ( is_singular() ) {
@@ -25,6 +27,7 @@ if ( is_singular() ) {
         $title_class = 'has-heading-3-font-size';
     } else {
         $thumb_id = get_post_thumbnail_id();
+        $side_image_id = $thumb_id;
     }
 
 } elseif ( is_archive() ) {
@@ -127,7 +130,7 @@ if ( $description ) {
                         block_template_part( 'hero-form' );
                     elseif ( $side_image ) : ?>
                         <figure class="wp-block-image">
-                            <?php the_post_thumbnail( 'large', [ 'class' => 'hero-side-image aligncenter' ] ); ?>
+                            <?php echo wp_get_attachment_image( $side_image_id, 'large', false, [ 'class' => 'hero-side-image aligncenter' ] ); ?>
                         </figure>
                     <?php endif; ?>
                 
