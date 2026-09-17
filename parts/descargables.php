@@ -3,7 +3,15 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-if (have_rows('files')) {
+if ( is_singular() ) {
+    $param = get_the_ID();
+} elseif ( is_tax() ) {
+    $param = get_queried_object();
+} else {
+    return;
+}
+
+if (have_rows('files', $param)) {
     echo '<section class="descargables-section wrapper" id="descargas">';
         echo '<div class="wp-block-group is-layout-flex mb-2">';
             echo '<figure class="wp-block-image">';

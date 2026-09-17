@@ -183,23 +183,23 @@ function smn_terms_shortcode($atts) {
 
             $output .= '<div class="wp-block-cover smn-terms-card">';
 
-            if ($thumb_id) {
-                // Extract image URL for background
-                $output .= wp_get_attachment_image($thumb_id, 'medium_large', false, ['class' => 'wp-block-cover__image-background']);
-                $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-dim has-background-img"></span>';
-            } else {
-                $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-neutral-100 has-background-dim has-background-dim-90"></span>';
-            }
+                if ($thumb_id) {
+                    // Extract image URL for background
+                    $output .= wp_get_attachment_image($thumb_id, 'medium_large', false, ['class' => 'wp-block-cover__image-background']);
+                    $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-dim has-background-img"></span>';
+                } else {
+                    $output .= '<span aria-hidden="true" class="wp-block-cover__background has-background-neutral-100 has-background-dim has-background-dim-90"></span>';
+                }
 
-            $output .= '<div class="wp-block-cover__inner-container">';
-            $output .= '<h3 class="smn-terms-title"><a href="' . esc_url($term_link) . '" class="stretched-link">' . esc_html($term->name) . '</a></h3>';
+                $output .= '<div class="wp-block-cover__inner-container">';
+                        $output .= '<h3 class="smn-terms-title"><a href="' . esc_url($term_link) . '" class="stretched-link">' . esc_html($term->name) . '</a></h3>';
 
-            $description = get_field('term_description_pt_archive', $taxonomy . '_' . $term->term_id);
-            if ( $description ) {
-                $output .= '<div class="smn-terms-description has-small-font-size">' . wp_kses_post(wpautop($description)) . '</div>';
-            }
+                        $description = get_field('term_description_pt_archive', $taxonomy . '_' . $term->term_id);
+                        if ( $description ) {
+                            $output .= '<div class="smn-terms-description has-small-font-size">' . wp_kses_post(wpautop($description)) . '</div>';
+                        }
 
-            $output .= '</div>';
+                $output .= '</div>';
             $output .= '</div>';
         }
         $output .= '</div>';
@@ -244,7 +244,8 @@ function smn_terms_shortcode($atts) {
 
     if ( is_tax() ) {
         ob_start();
-        block_template_part( 'area-pedir-presupuesto' );
+        get_template_part( 'parts/descargables' );
+        get_template_part( 'parts/area-pedir-presupuesto' );
         $output .= ob_get_clean();
     }
 
