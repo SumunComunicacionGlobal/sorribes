@@ -14,7 +14,7 @@ $thumb_width = 0;
 $side_image = true;
 $formulario_hero = false;
 $side_image_id = false;
-$bg_id = false;
+$bg_id = THUMBNAIL_ID;
 
 
 if ( is_singular() ) {
@@ -69,8 +69,20 @@ if ( is_singular( 'solucion' ) ) {
     $formulario_hero = true;
 }
 
-if ( ! $thumb_id || $thumb_width < 760 ) {
-    $thumb_id = THUMBNAIL_ID;
+if ( $thumb_id ) {
+    $metadata = wp_get_attachment_metadata( $thumb_id );
+    $thumb_width = ! empty( $metadata['width'] ) ? (int) $metadata['width'] : 0;
+
+    if ( $thumb_width >= 760 ) {
+        $bg_id = $thumb_id;
+        $side_image_id = $thumb_id;
+    } else {
+        $bg_id = THUMBNAIL_ID;
+        $side_image_id = $thumb_id;
+    }
+} else {
+    $bg_id = THUMBNAIL_ID;
+    $side_image_id = false;
 }
 
 if ( $description ) {
@@ -95,8 +107,8 @@ if ( $description ) {
 ?>
 
 <div id="hero" class="wp-block-cover alignfull bisel-abajo-derecha">
-    <?php if ( $thumb_id ) : ?>
-        <img class="wp-block-cover__image-background" alt="<?php echo esc_attr( $title ); ?>" src="<?php echo esc_url( wp_get_attachment_url( $thumb_id ) ); ?>" />
+    <?php if ( $bg_id ) : ?>
+        <img class="wp-block-cover__image-background" alt="<?php echo esc_attr( $title ); ?>" src="<?php echo esc_url( wp_get_attachment_url( $bg_id ) ); ?>" />
     <?php endif; ?>
     <span aria-hidden="true" class="wp-block-cover__background has-background-dim-80 has-background-dim has-background has-neutral-100-background"></span>
     <div class="wp-block-cover__inner-container has-global-padding is-layout-constrained">
@@ -128,7 +140,7 @@ if ( $description ) {
                     
                     <?php if ( $formulario_hero) :
                         block_template_part( 'hero-form' );
-                    elseif ( $side_image ) : ?>
+                    elseif ( $side_image && $side_image_id ) : ?>
                         <figure class="wp-block-image">
                             <?php echo wp_get_attachment_image( $side_image_id, 'large', false, [ 'class' => 'hero-side-image aligncenter' ] ); ?>
                         </figure>
