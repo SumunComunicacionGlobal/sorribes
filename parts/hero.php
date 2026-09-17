@@ -11,7 +11,7 @@ $cta = false;
 $thumb_id = false;
 $title_class = '';
 $thumb_width = 0;
-$side_image = false;
+$side_image = true;
 $formulario_hero = false;
 
 
@@ -64,16 +64,6 @@ if ( is_singular() ) {
 
 if ( is_singular( 'solucion' ) ) {
     $formulario_hero = true;
-}
-
-if ( $thumb_id ) {
-    $image = wp_get_attachment_metadata( $thumb_id );
-    if ( isset( $image['width'] ) ) {
-        $thumb_width = $image['width'];
-        if ( $thumb_width < 760 ) {
-            $side_image = true;
-        }
-    }
 }
 
 if ( ! $thumb_id || $thumb_width < 760 ) {
