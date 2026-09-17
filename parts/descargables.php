@@ -44,7 +44,7 @@ if (have_rows('files', $param)) {
                     ],
                     $title);
 
-                $title = mb_convert_case($title, MB_CASE_TITLE_SIMPLE, "UTF-8");
+                // $title = mb_convert_case($title, MB_CASE_TITLE_SIMPLE, "UTF-8");
                     
                 $description = get_post_field('post_content', $file_id);
 
