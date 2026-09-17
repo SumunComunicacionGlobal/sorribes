@@ -20,7 +20,7 @@ if (have_rows('files', $param)) {
             echo '<h2>Documentación y descargas</h2>';
         echo '</div>';
         echo '<div class="is-layout-grid smn-default-grid smn-descargables-grid">';
-        while (have_rows('files')) {
+        while (have_rows('files', $param)) {
             the_row();
             $file_id = get_sub_field('file');
             if ($file_id) {
