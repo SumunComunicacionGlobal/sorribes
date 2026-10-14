@@ -34,6 +34,8 @@ if (have_rows('files', $param)) {
                         '_',
                         'FichaTecnica',
                         'FichaTécnica',
+                        'FICHATECNICA',
+                        'FICHATÉCNICA'
                     ],
                     [ 
                         '',
@@ -41,6 +43,8 @@ if (have_rows('files', $param)) {
                         ' ',
                         'Ficha Técnica',
                         'Ficha Técnica',
+                        'Ficha Técnica',
+                        'Ficha Técnica'
                     ],
                     $title);
 
