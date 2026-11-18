@@ -447,21 +447,31 @@ function smn_ultimos_presupuestos_solicitados_shortcode() {
             admin_url('admin-post.php?action=smn_descargar_presupuestos'),
             'smn_descargar_presupuestos'
         );
-        $output .= '<p><a href="' . esc_url($zip_url) . '">' . esc_html__('Descargar todos en ZIP', 'sorribes') . '</a></p>';
+        $output .= '<p><a class="button button-primary" href="' . esc_url($zip_url) . '">' . esc_html__('Descargar todos en ZIP', 'sorribes') . '</a></p>';
     } else {
         $output .= '<p>' . esc_html__('La descarga ZIP no esta disponible en este servidor.', 'sorribes') . '</p>';
     }
 
-    $output .= '<ul>';
+    $output .= '<div style="overflow-x:auto;"><table class="widefat striped"><thead><tr>';
+    $output .= '<th scope="col">' . esc_html__('Fecha y hora', 'sorribes') . '</th>';
+    $output .= '<th scope="col">' . esc_html__('PDF', 'sorribes') . '</th>';
+    $output .= '<th scope="col">' . esc_html__('Email', 'sorribes') . '</th>';
+    $output .= '<th scope="col">' . esc_html__('Formulario', 'sorribes') . '</th>';
+    $output .= '</tr></thead><tbody>';
+    $date_format = get_option('date_format') . ' ' . get_option('time_format');
     foreach (array_slice($files, 0, 100) as $file) {
-        $output .= '<li><a href="' . esc_url($file['url']) . '" download="' . esc_attr($file['name']) . '">' . esc_html($file['name']) . '</a>';
+        $output .= '<tr><td>' . esc_html(wp_date($date_format, $file['modified'])) . '</td>';
+        $output .= '<td><a href="' . esc_url($file['url']) . '" download="' . esc_attr($file['name']) . '">' . esc_html($file['name']) . '</a></td>';
         $message = smn_get_presupuesto_flamingo($file['modified']);
         if ($message) {
-            $output .= ' - <a href="' . esc_url($message['url']) . '">' . esc_html($message['email']) . '</a>';
+            $output .= '<td>' . esc_html($message['email']) . '</td>';
+            $output .= '<td><a href="' . esc_url($message['url']) . '">' . esc_html__('[ver entrada del formulario]', 'sorribes') . '</a></td>';
+        } else {
+            $output .= '<td>-</td><td>-</td>';
         }
-        $output .= '</li>';
+        $output .= '</tr>';
     }
-    $output .= '</ul></div>';
+    $output .= '</tbody></table></div></div>';
 
     return $output;
 }
