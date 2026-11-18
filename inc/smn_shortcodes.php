@@ -158,9 +158,9 @@ function smn_terms_shortcode($atts) {
         'hide_empty' => true,
         'parent' => $parent,
     ]);
-    if ( !empty($terms) && !is_wp_error($terms)) {
+    $output = '';
 
-        $output = '';
+    if ( !empty($terms) && !is_wp_error($terms)) {
 
         if ( is_tax() && $title == 'auto' ) {
             $title = sprintf( esc_html__( 'Tipos de %s', 'sorribes' ), '<mark class="has-inline-color has-primary-30-color">' . strtolower( $queried_object->name ) ) . '</mark>';
@@ -203,43 +203,6 @@ function smn_terms_shortcode($atts) {
             $output .= '</div>';
         }
         $output .= '</div>';
-
-    } else {
-        remove_filter( 'the_content', 'wpautop' );
-        // show products in current term
-        $products = new WP_Query([
-            'post_type' => 'solucion',
-            'tax_query' => [
-                [
-                    'taxonomy' => $taxonomy,
-                    'field' => 'term_id',
-                    'terms' => $parent,
-                ],
-            ],
-        ]);
-
-        if ( $products->have_posts() ) {
-
-            $output = '<div class="is-layout-grid smn-default-grid smn-archive-posts-grid">';
-            while ( $products->have_posts() ) {
-                $products->the_post();
-                // $output .= '<div class="card">';
-                //     $output .= '<h3 class="has-heading-4-font-size"><a href="' . esc_url( get_permalink() ) . '" class="stretched-link">' . get_the_title() . '</a></h3>';
-                // $output .= '</div>';
-                ob_start();
-                get_template_part( 'template-parts/content', get_post_type() );
-                $output .= ob_get_clean();
-                $output = str_replace(array('<p>', '</p>'), '', $output);
-                $output = str_replace(array('<br>', '<br/>', '<br />'), '', $output);
-
-
-            }
-            wp_reset_postdata();
-            $output .= '</div>';
-        }
-
-        add_filter( 'the_content', 'wpautop' );
-
     }
 
     if ( is_tax() ) {
