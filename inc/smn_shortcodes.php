@@ -452,11 +452,11 @@ function smn_ultimos_presupuestos_solicitados_shortcode() {
         $output .= '<p>' . esc_html__('La descarga ZIP no esta disponible en este servidor.', 'sorribes') . '</p>';
     }
 
-    $output .= '<div style="overflow-x:auto;"><table class="widefat striped"><thead><tr>';
+    $output .= '<div style="overflow-x:auto;"><table class="widefat striped" style="table-layout:fixed;min-width:400px;overflow-wrap:anywhere;">';
+    $output .= '<colgroup><col style="width:100px;"><col style="width:200px;"><col></colgroup><thead><tr>';
     $output .= '<th scope="col">' . esc_html__('Fecha y hora', 'sorribes') . '</th>';
     $output .= '<th scope="col">' . esc_html__('PDF', 'sorribes') . '</th>';
-    $output .= '<th scope="col">' . esc_html__('Email', 'sorribes') . '</th>';
-    $output .= '<th scope="col">' . esc_html__('Formulario', 'sorribes') . '</th>';
+    $output .= '<th scope="col">' . esc_html__('Email y formulario', 'sorribes') . '</th>';
     $output .= '</tr></thead><tbody>';
     $date_format = get_option('date_format') . ' ' . get_option('time_format');
     foreach (array_slice($files, 0, 100) as $file) {
@@ -464,10 +464,11 @@ function smn_ultimos_presupuestos_solicitados_shortcode() {
         $output .= '<td><a href="' . esc_url($file['url']) . '" target="_blank" rel="noopener noreferrer">' . esc_html($file['name']) . '</a></td>';
         $message = smn_get_presupuesto_flamingo($file['modified']);
         if ($message) {
-            $output .= '<td>' . esc_html($message['email']) . '</td>';
-            $output .= '<td><a href="' . esc_url($message['url']) . '" target="_blank" rel="noopener noreferrer">' . esc_html__('[ver entrada del formulario]', 'sorribes') . '</a></td>';
+            $output .= '<td>' . esc_html($message['email']) . '<br>';
+            $output .= '<a href="' . esc_url($message['url']) . '" target="_blank" rel="noopener noreferrer">' . esc_html__('[ver entrada del formulario]', 'sorribes') . '</a> ';
+            $output .= '<a href="' . esc_url('mailto:' . $message['email']) . '">' . esc_html__('[enviar email]', 'sorribes') . '</a></td>';
         } else {
-            $output .= '<td>-</td><td>-</td>';
+            $output .= '<td>-</td>';
         }
         $output .= '</tr>';
     }
