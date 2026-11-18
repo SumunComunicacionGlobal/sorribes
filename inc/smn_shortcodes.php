@@ -461,11 +461,11 @@ function smn_ultimos_presupuestos_solicitados_shortcode() {
     $date_format = get_option('date_format') . ' ' . get_option('time_format');
     foreach (array_slice($files, 0, 100) as $file) {
         $output .= '<tr><td>' . esc_html(wp_date($date_format, $file['modified'])) . '</td>';
-        $output .= '<td><a href="' . esc_url($file['url']) . '" download="' . esc_attr($file['name']) . '">' . esc_html($file['name']) . '</a></td>';
+        $output .= '<td><a href="' . esc_url($file['url']) . '" target="_blank" rel="noopener noreferrer">' . esc_html($file['name']) . '</a></td>';
         $message = smn_get_presupuesto_flamingo($file['modified']);
         if ($message) {
             $output .= '<td>' . esc_html($message['email']) . '</td>';
-            $output .= '<td><a href="' . esc_url($message['url']) . '">' . esc_html__('[ver entrada del formulario]', 'sorribes') . '</a></td>';
+            $output .= '<td><a href="' . esc_url($message['url']) . '" target="_blank" rel="noopener noreferrer">' . esc_html__('[ver entrada del formulario]', 'sorribes') . '</a></td>';
         } else {
             $output .= '<td>-</td><td>-</td>';
         }
