@@ -426,3 +426,71 @@ add_filter('acf/prepare_field/type=message', function ($field) {
 
     return $field;
 });
+
+function smn_pdf_numeric_reference() {
+    return (string) wp_rand(10000000, 99999999);
+}
+
+function smn_pdf_numeric_hidden_reference($fields) {
+    if (isset($fields['wpcf7cfpdf_hidden_reference'])) {
+        $fields['wpcf7cfpdf_hidden_reference'] = smn_pdf_numeric_reference();
+    }
+
+    return $fields;
+}
+add_filter('wpcf7_form_hidden_fields', 'smn_pdf_numeric_hidden_reference', 20);
+
+function smn_pdf_numeric_posted_reference($posted_data) {
+    $key = 'wpcf7cfpdf_hidden_reference';
+    if (!isset($_POST[$key])) {
+        return $posted_data;
+    }
+
+    $reference = is_string($_POST[$key]) ? wp_unslash($_POST[$key]) : '';
+    if (!preg_match('/\A[1-9][0-9]{7}\z/', $reference)) {
+        $reference = smn_pdf_numeric_reference();
+    }
+
+    $_POST[$key] = $reference;
+    $posted_data[$key] = $reference;
+
+    return $posted_data;
+}
+add_filter('wpcf7_posted_data', 'smn_pdf_numeric_posted_reference', 20);
+
+function smn_pdf_numeric_reference_script() {
+    if (!class_exists('cf7_sendpdf')) {
+        return;
+    }
+    ?>
+    <script id="smn-pdf-numeric-reference">
+    document.addEventListener('wpcf7beforesubmit', function (event) {
+        const key = 'wpcf7cfpdf_hidden_reference';
+        const detail = event.detail;
+        if (!detail || !detail.formData || !detail.formData.has(key)) {
+            return;
+        }
+
+        const field = event.target.querySelector('input[name="' + key + '"]');
+        if (!field) {
+            return;
+        }
+
+        const values = new Uint32Array(1);
+        do {
+            window.crypto.getRandomValues(values);
+        } while (values[0] >= 4230000000);
+        const reference = String(10000000 + values[0] % 90000000);
+
+        field.value = reference;
+        detail.formData.set(key, reference);
+        for (const input of detail.inputs || []) {
+            if (input.name === key) {
+                input.value = reference;
+            }
+        }
+    });
+    </script>
+    <?php
+}
+add_action('wp_footer', 'smn_pdf_numeric_reference_script', 20);
