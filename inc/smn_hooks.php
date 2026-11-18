@@ -417,3 +417,12 @@ function sumun_finish_file_replacement( $new_attachment_id ) {
     // Limpiar la memoria temporal
     unset( $GLOBALS['sumun_file_replacements'][ $basename ] );
 }
+
+// Muestra shortcodes en campos de tipo mensaje de ACF
+add_filter('acf/prepare_field/type=message', function ($field) {
+    if (has_shortcode($field['message'], 'ultimos_presupuestos_solicitados')) {
+        $field['message'] = do_shortcode($field['message']);
+    }
+
+    return $field;
+});
