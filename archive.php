@@ -41,7 +41,7 @@ if ( is_tax( 'tipo' ) ) {
 			}
 			?>
 
-			<?php if ( $show_posts && have_posts() ) : ?>
+			<?php if ( $show_posts && have_posts() && !$subcategories ) : ?>
 
 				<?php if ( is_tax( 'tipo') ) {
 					$queried_object = get_queried_object();
