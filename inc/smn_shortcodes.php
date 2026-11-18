@@ -453,7 +453,7 @@ function smn_ultimos_presupuestos_solicitados_shortcode() {
     }
 
     $output .= '<div style="overflow-x:auto;"><table class="widefat striped" style="table-layout:fixed;min-width:400px;overflow-wrap:anywhere;">';
-    $output .= '<colgroup><col style="width:100px;"><col style="width:200px;"><col></colgroup><thead><tr>';
+    $output .= '<colgroup><col style="width:150px;"><col style="width:250px;"><col></colgroup><thead><tr>';
     $output .= '<th scope="col">' . esc_html__('Fecha y hora', 'sorribes') . '</th>';
     $output .= '<th scope="col">' . esc_html__('PDF', 'sorribes') . '</th>';
     $output .= '<th scope="col">' . esc_html__('Email y formulario', 'sorribes') . '</th>';
@@ -464,7 +464,7 @@ function smn_ultimos_presupuestos_solicitados_shortcode() {
         $output .= '<td><a href="' . esc_url($file['url']) . '" target="_blank" rel="noopener noreferrer">' . esc_html($file['name']) . '</a></td>';
         $message = smn_get_presupuesto_flamingo($file['modified']);
         if ($message) {
-            $output .= '<td>' . esc_html($message['email']) . '<br>';
+            $output .= '<td>' . esc_html($message['email']) . ' ';
             $output .= '<a href="' . esc_url($message['url']) . '" target="_blank" rel="noopener noreferrer">' . esc_html__('[ver entrada del formulario]', 'sorribes') . '</a> ';
             $output .= '<a href="' . esc_url('mailto:' . $message['email']) . '">' . esc_html__('[enviar email]', 'sorribes') . '</a></td>';
         } else {
