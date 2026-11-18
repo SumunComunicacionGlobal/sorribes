@@ -357,3 +357,166 @@ function smn_menu_anclas_shortcode() {
     return $output;
 }
 add_shortcode('menu_anclas', 'smn_menu_anclas_shortcode');
+
+function smn_get_presupuestos_solicitados() {
+    $uploads = wp_upload_dir();
+    $directory = trailingslashit($uploads['basedir']) . 'sendpdfcf7_uploads/presupuestos';
+    $files = [];
+
+    if (!empty($uploads['error']) || !is_dir($directory) || !is_readable($directory)) {
+        return $files;
+    }
+
+    foreach (new DirectoryIterator($directory) as $file) {
+        if ($file->isLink() || !$file->isFile() || !$file->isReadable()) {
+            continue;
+        }
+
+        $name = $file->getFilename();
+        if (stripos($name, 'preview-') === 0 || strtolower($file->getExtension()) !== 'pdf') {
+            continue;
+        }
+
+        $files[] = [
+            'name' => $name,
+            'path' => $file->getPathname(),
+            'modified' => $file->getMTime(),
+            'url' => trailingslashit($uploads['baseurl']) . 'sendpdfcf7_uploads/presupuestos/' . rawurlencode($name),
+        ];
+    }
+
+    usort($files, function ($first, $second) {
+        return ($second['modified'] <=> $first['modified']) ?: strcmp($first['name'], $second['name']);
+    });
+
+    return $files;
+}
+
+function smn_get_presupuesto_flamingo($timestamp) {
+    if (!post_type_exists('flamingo_inbound')) {
+        return null;
+    }
+
+    $messages = get_posts([
+        'post_type' => 'flamingo_inbound',
+        'post_status' => 'publish',
+        'numberposts' => 2,
+        'date_query' => [
+            [
+                'column' => 'post_date_gmt',
+                'after' => gmdate('Y-m-d H:i:s', $timestamp - 60),
+                'before' => gmdate('Y-m-d H:i:s', $timestamp + 60),
+                'inclusive' => true,
+            ],
+        ],
+    ]);
+
+    if (count($messages) !== 1) {
+        return null;
+    }
+
+    $message = $messages[0];
+    $email = get_post_meta($message->ID, '_from_email', true);
+    if (!is_email($email)) {
+        return null;
+    }
+
+    return [
+        'email' => $email,
+        'url' => add_query_arg([
+            'page' => 'flamingo_inbound',
+            'action' => 'edit',
+            'post' => $message->ID,
+        ], admin_url('admin.php')),
+    ];
+}
+
+function smn_ultimos_presupuestos_solicitados_shortcode() {
+    if (!current_user_can('manage_options')) {
+        return '';
+    }
+
+    $files = smn_get_presupuestos_solicitados();
+    if (!$files) {
+        return '<p>' . esc_html__('No hay presupuestos disponibles.', 'sorribes') . '</p>';
+    }
+
+    $output = '<div class="smn-presupuestos-solicitados">';
+    if (class_exists('ZipArchive')) {
+        $zip_url = wp_nonce_url(
+            admin_url('admin-post.php?action=smn_descargar_presupuestos'),
+            'smn_descargar_presupuestos'
+        );
+        $output .= '<p><a href="' . esc_url($zip_url) . '">' . esc_html__('Descargar todos en ZIP', 'sorribes') . '</a></p>';
+    } else {
+        $output .= '<p>' . esc_html__('La descarga ZIP no esta disponible en este servidor.', 'sorribes') . '</p>';
+    }
+
+    $output .= '<ul>';
+    foreach (array_slice($files, 0, 100) as $file) {
+        $output .= '<li><a href="' . esc_url($file['url']) . '" download="' . esc_attr($file['name']) . '">' . esc_html($file['name']) . '</a>';
+        $message = smn_get_presupuesto_flamingo($file['modified']);
+        if ($message) {
+            $output .= ' - <a href="' . esc_url($message['url']) . '">' . esc_html($message['email']) . '</a>';
+        }
+        $output .= '</li>';
+    }
+    $output .= '</ul></div>';
+
+    return $output;
+}
+add_shortcode('ultimos_presupuestos_solicitados', 'smn_ultimos_presupuestos_solicitados_shortcode');
+
+function smn_descargar_presupuestos() {
+    if (!current_user_can('manage_options')) {
+        wp_die(esc_html__('No tienes permiso para descargar presupuestos.', 'sorribes'), '', ['response' => 403]);
+    }
+    check_admin_referer('smn_descargar_presupuestos');
+
+    if (!class_exists('ZipArchive')) {
+        wp_die(esc_html__('La descarga ZIP no esta disponible en este servidor.', 'sorribes'), '', ['response' => 503]);
+    }
+
+    $files = smn_get_presupuestos_solicitados();
+    if (!$files) {
+        wp_die(esc_html__('No hay presupuestos disponibles.', 'sorribes'), '', ['response' => 404]);
+    }
+
+    $temporary_file = wp_tempnam('presupuestos.zip');
+    if (!$temporary_file) {
+        wp_die(esc_html__('No se ha podido crear el ZIP.', 'sorribes'), '', ['response' => 500]);
+    }
+
+    $zip = new ZipArchive();
+    $success = $zip->open($temporary_file, ZipArchive::OVERWRITE) === true;
+    if ($success) {
+        foreach ($files as $file) {
+            if (!$zip->addFile($file['path'], $file['name'])) {
+                $success = false;
+                break;
+            }
+        }
+        $success = $zip->close() && $success;
+    }
+
+    if (!$success) {
+        wp_delete_file($temporary_file);
+        wp_die(esc_html__('No se ha podido crear el ZIP completo.', 'sorribes'), '', ['response' => 500]);
+    }
+
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
+    nocache_headers();
+    header('Content-Type: application/zip');
+    header('Content-Disposition: attachment; filename="presupuestos.zip"');
+    header('Content-Length: ' . filesize($temporary_file));
+    try {
+        readfile($temporary_file);
+    } finally {
+        wp_delete_file($temporary_file);
+    }
+    exit;
+}
+add_action('admin_post_smn_descargar_presupuestos', 'smn_descargar_presupuestos');
+
